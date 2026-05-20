@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { AmidaBoard } from './components/AmidaBoard';
 import { generateAmida, tracePath, type AmidaBoardData } from './logic/amida';
 import { RefreshCw, RotateCcw, ArrowRight } from 'lucide-react';
@@ -14,7 +14,9 @@ const App: React.FC = () => {
   );
   
   const [tracedPaths, setTracedPaths] = useState<Map<number, number>>(new Map());
-  const [activeTracing, setActiveTracing] = useState<{ col: number; progress: number } | null>(null);
+  const [startedPaths, setStartedPaths] = useState<Record<number, boolean>>({});
+  const [activeTracings, setActiveTracings] = useState<Record<number, number>>({});
+  const resetCounterRef = useRef<number>(0);
 
   // Handle participant input changes in-place
   const handleParticipantChange = (index: number, value: string) => {
@@ -36,7 +38,7 @@ const App: React.FC = () => {
 
   // Animate the path-tracing for a participant
   const handleStartTrace = (colIndex: number) => {
-    if (activeTracing !== null) return;
+    if (startedPaths[colIndex]) return;
 
     const path = tracePath(boardData, colIndex);
     const colWidth = 600 / boardData.cols;
@@ -54,14 +56,29 @@ const App: React.FC = () => {
     const speed = 900;
     const duration = (physicalLength / speed) * 1000;
 
+    // Immediately mark the path as started (renders as checkmark and disables button click)
+    setStartedPaths((prev) => ({
+      ...prev,
+      [colIndex]: true,
+    }));
+
     let start: number | null = null;
+    const currentResetCount = resetCounterRef.current;
 
     const animate = (timestamp: number) => {
+      // Abort if board was reset or recreated
+      if (resetCounterRef.current !== currentResetCount) {
+        return;
+      }
+
       if (!start) start = timestamp;
       const elapsed = timestamp - start;
       const progress = Math.min(elapsed / duration, 1);
 
-      setActiveTracing({ col: colIndex, progress });
+      setActiveTracings((prev) => ({
+        ...prev,
+        [colIndex]: progress,
+      }));
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -69,12 +86,19 @@ const App: React.FC = () => {
         // Animation finished
         const finalX = path[path.length - 1].x;
 
+        // Reveal the result slot at the bottom
         setTracedPaths((prev) => {
           const next = new Map(prev);
           next.set(colIndex, finalX);
           return next;
         });
-        setActiveTracing(null);
+
+        // Clean up from active tracings
+        setActiveTracings((prev) => {
+          const next = { ...prev };
+          delete next[colIndex];
+          return next;
+        });
       }
     };
 
@@ -83,16 +107,20 @@ const App: React.FC = () => {
 
   // Clear all tracing paths
   const handleResetTracing = () => {
+    resetCounterRef.current++;
     setTracedPaths(new Map());
-    setActiveTracing(null);
+    setStartedPaths({});
+    setActiveTracings({});
   };
 
   // Action: Recreate Amida board with the same inputs
   const handleRecreateBoard = () => {
+    resetCounterRef.current++;
     const newBoard = generateAmida({ cols: 5, levels: 12 });
     setBoardData(newBoard);
     setTracedPaths(new Map());
-    setActiveTracing(null);
+    setStartedPaths({});
+    setActiveTracings({});
   };
 
   const isCompleted = tracedPaths.size === boardData.cols;
@@ -106,7 +134,8 @@ const App: React.FC = () => {
           participants={participants}
           results={results}
           tracedPaths={tracedPaths}
-          activeTracing={activeTracing}
+          startedPaths={startedPaths}
+          activeTracings={activeTracings}
           onStartTrace={handleStartTrace}
           onChangeParticipant={handleParticipantChange}
           onChangeResult={handleResultChange}
@@ -116,9 +145,9 @@ const App: React.FC = () => {
         <div className="flex items-center justify-center space-x-4">
           <button
             onClick={handleResetTracing}
-            disabled={activeTracing !== null || tracedPaths.size === 0}
+            disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
             className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all ${
-              activeTracing !== null || tracedPaths.size === 0
+              tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
                 ? 'opacity-50 cursor-not-allowed shadow-none'
                 : 'cursor-pointer hover:-translate-y-0.5'
             }`}
@@ -129,12 +158,7 @@ const App: React.FC = () => {
 
           <button
             onClick={handleRecreateBoard}
-            disabled={activeTracing !== null}
-            className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all ${
-              activeTracing !== null
-                ? 'opacity-50 cursor-not-allowed shadow-none'
-                : 'cursor-pointer hover:-translate-y-0.5'
-            }`}
+            className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all cursor-pointer hover:-translate-y-0.5"
           >
             <RefreshCw size={13} />
             <span>あみだを作り直す</span>

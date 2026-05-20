@@ -7,7 +7,8 @@ interface AmidaBoardProps {
   participants: string[];
   results: string[];
   tracedPaths: Map<number, number>; // Map<participantCol, resultCol>
-  activeTracing: { col: number; progress: number } | null;
+  startedPaths: Record<number, boolean>;
+  activeTracings: Record<number, number>;
   onStartTrace: (col: number) => void;
   onChangeParticipant: (index: number, value: string) => void;
   onChangeResult: (index: number, value: string) => void;
@@ -18,7 +19,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   participants,
   results,
   tracedPaths,
-  activeTracing,
+  startedPaths,
+  activeTracings,
   onStartTrace,
   onChangeParticipant,
   onChangeResult,
@@ -108,13 +110,13 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       .join(' ');
   };
 
+  const hasAnyStarted = Object.keys(startedPaths).length > 0;
+
   return (
     <div className="w-full max-w-2xl mx-auto px-4 flex flex-col items-center">
       {/* Top: Participant Selection Cards */}
       <div className="w-full grid grid-cols-5 gap-0 mb-1">
         {participants.map((name, index) => {
-          const isAnyTracing = activeTracing !== null;
-
           return (
             <div
               key={`card-part-${index}`}
@@ -124,7 +126,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 type="text"
                 value={name}
                 onChange={(e) => onChangeParticipant(index, e.target.value)}
-                disabled={isAnyTracing}
+                disabled={hasAnyStarted}
                 maxLength={12}
                 className="text-center font-bold text-slate-700 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
                 placeholder={String.fromCharCode(65 + index)}
@@ -198,8 +200,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
 
           {/* Completed Traced Paths (Semi-transparent background paths) */}
           {Array.from(tracedPaths.keys()).map((partCol) => {
-            // If this is currently being traced, don't draw the static completed path
-            if (activeTracing?.col === partCol) return null;
+            // If this is currently being traced, don't draw the static completed path yet
+            if (activeTracings[partCol] !== undefined) return null;
 
             const path = tracePath(boardData, partCol);
             return (
@@ -216,48 +218,45 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             );
           })}
 
-          {/* Active Tracing Path */}
-          {activeTracing !== null && (
-            (() => {
-              const path = tracePath(boardData, activeTracing.col);
-              const subPath = getSubPath(path, activeTracing.progress);
-              const tipPt = getSvgCoords(subPath[subPath.length - 1]);
+          {/* Active Tracing Paths (Can be multiple!) */}
+          {Object.entries(activeTracings).map(([colStr, progress]) => {
+            const colIdx = Number(colStr);
+            const path = tracePath(boardData, colIdx);
+            const subPath = getSubPath(path, progress);
+            const tipPt = getSvgCoords(subPath[subPath.length - 1]);
 
-              return (
-                <g>
-                  {/* Glowing core path */}
-                  <polyline
-                    points={getPolylinePointsStr(subPath)}
-                    fill="none"
-                    stroke="url(#indigoGrad)"
-                    strokeWidth={5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="path-active"
-                  />
+            return (
+              <g key={`active-trace-${colIdx}`}>
+                {/* Glowing core path */}
+                <polyline
+                  points={getPolylinePointsStr(subPath)}
+                  fill="none"
+                  stroke="url(#indigoGrad)"
+                  strokeWidth={5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="path-active"
+                />
 
-                  {/* Pulsing indicator dot at the path tip */}
-                  <circle
-                    cx={tipPt.x}
-                    cy={tipPt.y}
-                    r={7}
-                    fill="#ffffff"
-                    stroke="#4f46e5"
-                    strokeWidth={3.5}
-                    filter="url(#glow)"
-                    className="pulse-glow"
-                  />
-                </g>
-              );
-            })()
-          )}
+                {/* Pulsing indicator dot at the path tip */}
+                <circle
+                  cx={tipPt.x}
+                  cy={tipPt.y}
+                  r={7}
+                  fill="#ffffff"
+                  stroke="#4f46e5"
+                  strokeWidth={3.5}
+                  filter="url(#glow)"
+                  className="pulse-glow"
+                />
+              </g>
+            );
+          })}
 
           {/* Column indicators / clickable action buttons at the top */}
           {Array.from({ length: cols }).map((_, colIdx) => {
             const pt = getSvgCoords({ x: colIdx, y: 0 });
-            const isTraced = tracedPaths.has(colIdx);
-            const isActive = activeTracing?.col === colIdx;
-            const isAnyTracing = activeTracing !== null;
+            const isTraced = !!startedPaths[colIdx];
 
             // Define styles based on button state to match requested designs perfectly
             let circleFill = "#4f46e5"; // Indigo-600 (Play Button)
@@ -273,24 +272,9 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
               circleClass = "";
               iconType = "check";
               iconColor = "#4f46e5"; // Indigo-600
-            } else if (isActive) {
-              // Currently active/tracing: Light indigo bg, indigo stroke, Play icon (disabled/flat)
-              circleFill = "#f0f2fe";
-              circleStroke = "#4f46e5";
-              circleClass = "";
-              iconType = "play_active";
-              iconColor = "#4f46e5";
-            } else if (isAnyTracing) {
-              // Disabled because another column is tracing: Greyed out
-              circleFill = "#f8fafc"; // Slate-50
-              circleStroke = "#e2e8f0"; // Slate-200
-              circleClass = "";
-              iconType = "play_disabled";
-              iconColor = "#cbd5e1"; // Slate-300
             }
 
-            // Traced columns or columns while tracing is active are unclickable
-            const isUnclickable = isTraced || isAnyTracing;
+            const isUnclickable = isTraced;
             const buttonClass = isUnclickable
               ? "pointer-events-none outline-none"
               : "transition-all duration-150 cursor-pointer outline-none";
@@ -317,15 +301,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 />
 
                 {/* Centered Icons (Width 12, Height 12) */}
-                {(iconType === "play" || iconType === "play_active") && (
-                  <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill={iconColor} stroke="none">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                  </g>
-                )}
-
-                {iconType === "play_disabled" && (
+                {iconType === "play" && (
                   <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill={iconColor} stroke="none">
                       <polygon points="5 3 19 12 5 21 5 3" />
@@ -377,7 +353,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 type="text"
                 value={val}
                 onChange={(e) => onChangeResult(index, e.target.value)}
-                disabled={activeTracing !== null}
+                disabled={hasAnyStarted}
                 maxLength={12}
                 className="text-center font-extrabold text-slate-800 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
                 placeholder={`${index + 1}`}
