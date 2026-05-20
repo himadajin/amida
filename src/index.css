@@ -88,13 +88,13 @@ body {
 
 /* SVG Amidakuji Grid Styles */
 .amida-grid-line {
-  stroke: var(--slate-6);
+  stroke: var(--slate-11);
   stroke-width: 2.5;
   stroke-linecap: round;
 }
 
 .amida-horizontal-line {
-  stroke: var(--slate-7);
+  stroke: var(--slate-11);
   stroke-width: 2.5;
   stroke-linecap: round;
   transition:
@@ -103,6 +103,6 @@ body {
 }
 
 .amida-horizontal-line:hover {
-  stroke: var(--slate-9);
+  stroke: var(--slate-12);
   stroke-width: 3.5;
 }

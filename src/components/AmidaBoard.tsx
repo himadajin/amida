@@ -208,10 +208,10 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
         <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full h-auto select-none">
           <defs>
             <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="var(--slate-6)" stopOpacity="0.4" />
-              <stop offset="10%" stopColor="var(--slate-6)" />
-              <stop offset="90%" stopColor="var(--slate-6)" />
-              <stop offset="100%" stopColor="var(--slate-6)" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="var(--slate-11)" stopOpacity="0.4" />
+              <stop offset="10%" stopColor="var(--slate-11)" />
+              <stop offset="90%" stopColor="var(--slate-11)" />
+              <stop offset="100%" stopColor="var(--slate-11)" stopOpacity="0.4" />
             </linearGradient>
           </defs>
 
@@ -358,7 +358,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             const participantIdx = getParticipantIndexForResult(colIdx);
             const fill =
               participantIdx === null
-                ? 'var(--slate-7)'
+                ? 'var(--slate-11)'
                 : USER_COLORS[participantIdx % USER_COLORS.length];
 
             return (

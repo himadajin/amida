@@ -35,7 +35,7 @@ describe('AmidaBoard', () => {
     renderBoard(new Map([[3, 3]]));
 
     expect(screen.getByTestId('bottom-dot-3')).toHaveAttribute('fill', '#0090ff');
-    expect(screen.getByTestId('bottom-dot-0')).toHaveAttribute('fill', 'var(--slate-7)');
+    expect(screen.getByTestId('bottom-dot-0')).toHaveAttribute('fill', 'var(--slate-11)');
   });
 
   it('keeps a started trace button at its hover elevation', () => {
