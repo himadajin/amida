@@ -156,14 +156,20 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
     return Array.from(tracedPaths.values()).includes(resultIdx);
   };
 
-  // Find which participant is connected to a revealed result slot
-  const getParticipantForResult = (resultIdx: number): string | null => {
+  // Find which participant index is connected to a revealed result slot
+  const getParticipantIndexForResult = (resultIdx: number): number | null => {
     for (const [partIdx, resIdx] of tracedPaths.entries()) {
       if (resIdx === resultIdx) {
-        return participants[partIdx];
+        return partIdx;
       }
     }
     return null;
+  };
+
+  // Find which participant is connected to a revealed result slot
+  const getParticipantForResult = (resultIdx: number): string | null => {
+    const partIdx = getParticipantIndexForResult(resultIdx);
+    return partIdx === null ? null : participants[partIdx];
   };
 
   const hasAnyStarted = Object.keys(startedPaths).length > 0;
@@ -341,8 +347,22 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           {/* Column indicators at the bottom */}
           {Array.from({ length: cols }).map((_, colIdx) => {
             const pt = getSvgCoords({ x: colIdx, y: levels + 1 });
+            const participantIdx = getParticipantIndexForResult(colIdx);
+            const fill =
+              participantIdx === null
+                ? 'var(--slate-7)'
+                : USER_COLORS[participantIdx % USER_COLORS.length];
+
             return (
-              <circle key={`bot-dot-${colIdx}`} cx={pt.x} cy={pt.y} r={4.5} fill="var(--slate-7)" />
+              <circle
+                key={`bot-dot-${colIdx}`}
+                data-testid={`bottom-dot-${colIdx}`}
+                cx={pt.x}
+                cy={pt.y}
+                r={4.5}
+                fill={fill}
+                className="transition-colors duration-300"
+              />
             );
           })}
         </svg>
