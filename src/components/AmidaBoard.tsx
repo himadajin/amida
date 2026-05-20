@@ -9,6 +9,8 @@ interface AmidaBoardProps {
   tracedPaths: Map<number, number>; // Map<participantCol, resultCol>
   activeTracing: { col: number; progress: number } | null;
   onStartTrace: (col: number) => void;
+  onChangeParticipant: (index: number, value: string) => void;
+  onChangeResult: (index: number, value: string) => void;
 }
 
 export const AmidaBoard: React.FC<AmidaBoardProps> = ({
@@ -18,6 +20,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   tracedPaths,
   activeTracing,
   onStartTrace,
+  onChangeParticipant,
+  onChangeResult,
 }) => {
   const { cols, levels, horizontalLines } = boardData;
 
@@ -122,13 +126,19 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                   : 'border-transparent hover:border-slate-200'
               }`}
             >
-              <div className="flex flex-col items-center space-y-1 mb-2.5">
+              <div className="flex flex-col items-center space-y-1 mb-2.5 w-full">
                 <span className="w-5 h-5 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold font-outfit">
                   {String.fromCharCode(65 + index)}
                 </span>
-                <span className="text-xs md:text-sm font-bold text-slate-700 truncate max-w-full px-1">
-                  {name}
-                </span>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => onChangeParticipant(index, e.target.value)}
+                  disabled={isAnyTracing}
+                  maxLength={12}
+                  className="text-center font-bold text-slate-700 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                  placeholder={String.fromCharCode(65 + index)}
+                />
               </div>
 
               <button
@@ -329,13 +339,19 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                   : 'border-slate-100/50 bg-slate-50/20'
               }`}
             >
-              <div className="flex flex-col items-center space-y-0.5">
+              <div className="flex flex-col items-center space-y-0.5 w-full">
                 <span className="w-5 h-5 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold font-outfit">
                   {index + 1}
                 </span>
-                <span className="text-xs md:text-sm font-extrabold text-slate-800 tracking-tight line-clamp-1">
-                  {val}
-                </span>
+                <input
+                  type="text"
+                  value={val}
+                  onChange={(e) => onChangeResult(index, e.target.value)}
+                  disabled={activeTracing !== null}
+                  maxLength={12}
+                  className="text-center font-extrabold text-slate-800 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                  placeholder={`${index + 1}`}
+                />
               </div>
 
               {revealed && partName ? (
