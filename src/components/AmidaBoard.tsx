@@ -362,15 +362,58 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 : USER_COLORS[participantIdx % USER_COLORS.length];
 
             return (
-              <circle
-                key={`bot-dot-${colIdx}`}
-                data-testid={`bottom-dot-${colIdx}`}
-                cx={pt.x}
-                cy={pt.y}
-                r={4.5}
-                fill={fill}
-                className="transition-colors duration-300"
-              />
+              <g key={`bot-dot-${colIdx}`}>
+                {participantIdx !== null && (
+                  <g
+                    data-testid={`completion-effect-${colIdx}`}
+                    className="amida-completion-effect"
+                    style={{ color: fill }}
+                  >
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y}
+                      r={4.5}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      className="amida-completion-ring"
+                    />
+                    <circle
+                      cx={pt.x - 7}
+                      cy={pt.y - 3}
+                      r={1.7}
+                      fill="currentColor"
+                      className="amida-completion-spark amida-completion-spark-left"
+                    />
+                    <circle
+                      cx={pt.x + 6}
+                      cy={pt.y - 4}
+                      r={1.5}
+                      fill="currentColor"
+                      className="amida-completion-spark amida-completion-spark-right"
+                    />
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y}
+                      r={4.2}
+                      fill="currentColor"
+                      className="amida-color-drop"
+                    />
+                  </g>
+                )}
+                <circle
+                  data-testid={`bottom-dot-${colIdx}`}
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={4.5}
+                  fill={fill}
+                  className={
+                    participantIdx === null
+                      ? 'transition-colors duration-300'
+                      : 'amida-bottom-dot-complete transition-colors duration-300'
+                  }
+                />
+              </g>
             );
           })}
         </svg>
@@ -394,7 +437,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             >
               {revealed && partName ? (
                 <div
-                  className="text-[10px] md:text-xs font-bold w-full animate-in fade-in duration-300 flex items-center justify-center py-1 -mt-1"
+                  className="amida-result-label text-[10px] md:text-xs font-bold w-full flex items-center justify-center py-1 -mt-1"
                   style={{ color: participantColor }}
                 >
                   <span className="truncate">{partName}</span>

@@ -38,6 +38,13 @@ describe('AmidaBoard', () => {
     expect(screen.getByTestId('bottom-dot-0')).toHaveAttribute('fill', 'var(--slate-11)');
   });
 
+  it('renders the completion effect only for completed bottom dots', () => {
+    renderBoard(new Map([[3, 3]]));
+
+    expect(screen.getByTestId('completion-effect-3')).toBeInTheDocument();
+    expect(screen.queryByTestId('completion-effect-0')).not.toBeInTheDocument();
+  });
+
   it('keeps a started trace button at its hover elevation', () => {
     renderBoard(new Map(), { 0: true });
 
