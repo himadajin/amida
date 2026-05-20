@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const [tracedPaths, setTracedPaths] = useState<Map<number, number>>(new Map());
   const [startedPaths, setStartedPaths] = useState<Record<number, boolean>>({});
   const [activeTracings, setActiveTracings] = useState<Record<number, number>>({});
+  const [startedOrder, setStartedOrder] = useState<number[]>([]); // Track order of clicking start buttons
   const resetCounterRef = useRef<number>(0);
 
   // Core layout metrics - entirely CSS-driven and evaluated by the browser natively
@@ -57,8 +58,8 @@ const App: React.FC = () => {
       physicalLength += Math.sqrt(dx * dx + dy * dy);
     }
 
-    // Fixed velocity (900 pixels per second)
-    const speed = 900;
+    // Fixed velocity (500 pixels per second)
+    const speed = 500;
     const duration = (physicalLength / speed) * 1000;
 
     // Immediately mark the path as started (renders as checkmark and disables button click)
@@ -66,6 +67,9 @@ const App: React.FC = () => {
       ...prev,
       [colIndex]: true,
     }));
+
+    // Record the start order
+    setStartedOrder((prev) => [...prev, colIndex]);
 
     let start: number | null = null;
     const currentResetCount = resetCounterRef.current;
@@ -116,6 +120,7 @@ const App: React.FC = () => {
     setTracedPaths(new Map());
     setStartedPaths({});
     setActiveTracings({});
+    setStartedOrder([]);
   };
 
   // Action: Recreate Amida board with the same inputs
@@ -126,10 +131,11 @@ const App: React.FC = () => {
     setTracedPaths(new Map());
     setStartedPaths({});
     setActiveTracings({});
+    setStartedOrder([]);
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col justify-between items-center pt-[3vh] pb-[2vh] px-4 bg-gradient-to-br from-slate-50 via-slate-100/50 to-slate-200/30">
+    <div className="h-screen w-screen overflow-hidden flex flex-col justify-between items-center pt-[3vh] pb-[2vh] px-4 bg-[var(--slate-2)]">
       <div
         className="w-full flex-grow flex flex-col justify-center items-center pt-[2vh] animate-in fade-in duration-500"
         style={{ maxWidth: boardMaxWidthCSS }}
@@ -142,6 +148,7 @@ const App: React.FC = () => {
           tracedPaths={tracedPaths}
           startedPaths={startedPaths}
           activeTracings={activeTracings}
+          startedOrder={startedOrder}
           onStartTrace={handleStartTrace}
           onChangeParticipant={handleParticipantChange}
           onChangeResult={handleResultChange}
@@ -151,16 +158,16 @@ const App: React.FC = () => {
 
       {/* Action Options Row - Fixed at screen bottom */}
       <div
-        className="w-full flex items-center justify-center space-x-4 pt-[2vh] pb-[1vh] border-t border-slate-100/60 shrink-0"
+        className="w-full flex items-center justify-center space-x-4 pt-[2vh] pb-[1vh] border-t border-[var(--slate-6)] shrink-0"
         style={{ maxWidth: boardMaxWidthCSS }}
       >
         <button
           onClick={handleResetTracing}
           disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
-          className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow,opacity] duration-200 ${
+          className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-[var(--slate-6)] bg-[var(--slate-1)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow,opacity] duration-200 ${
             tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
-              ? 'opacity-50 cursor-not-allowed shadow-none'
-              : 'cursor-pointer hover:-translate-y-0.5'
+              ? 'opacity-40 cursor-not-allowed shadow-none'
+              : 'cursor-pointer hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] hover:-translate-y-0.5'
           }`}
         >
           <RotateCcw size={13} />
@@ -169,7 +176,7 @@ const App: React.FC = () => {
 
         <button
           onClick={handleRecreateBoard}
-          className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow] duration-200 cursor-pointer hover:-translate-y-0.5"
+          className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-[var(--slate-6)] bg-[var(--slate-1)] hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow] duration-200 cursor-pointer hover:-translate-y-0.5"
         >
           <RefreshCw size={13} />
           <span>あみだを作り直す</span>
