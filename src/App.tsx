@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const svgHeight = 24 + (boardData.levels + 1) * levelHeight + 8;
   const aspectRatio = 600 / svgHeight;
   const boardMaxWidthCSS = `min(600px, max(280px, calc((85vh - 160px) * ${aspectRatio})))`;
-  const startPreludeDurationMs = 640;
+  const startPreludeDurationMs = 700;
 
   // Handle participant input changes in-place
   const handleParticipantChange = (index: number, value: string) => {

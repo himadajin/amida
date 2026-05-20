@@ -355,13 +355,6 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                       strokeWidth={2}
                       className="amida-start-ring"
                     />
-                    <circle
-                      cx={pt.x}
-                      cy={pt.y}
-                      r={4.1}
-                      fill="currentColor"
-                      className="amida-start-drop"
-                    />
                   </g>
                 )}
 

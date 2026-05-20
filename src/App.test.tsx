@@ -21,7 +21,7 @@ describe('App tracing animation', () => {
     expect(container.querySelector('polyline[fill="none"][stroke-width="4.5"]')).toBeNull();
 
     act(() => {
-      vi.advanceTimersByTime(639);
+      vi.advanceTimersByTime(699);
     });
 
     expect(container.querySelector('polyline[fill="none"][stroke-width="4.5"]')).toBeNull();

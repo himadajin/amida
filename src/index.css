@@ -174,11 +174,11 @@ body {
   }
   84% {
     opacity: 0.9;
-    transform: translate(-50%, 30px) scale(0.4, 1.08);
+    transform: translate(-50%, 18px) scale(0.4, 1);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, 34px) scale(0.3, 0.2);
+    transform: translate(-50%, 20px) scale(0.3, 0.18);
   }
 }
 
@@ -263,25 +263,6 @@ body {
   }
 }
 
-@keyframes amida-start-drop {
-  0% {
-    opacity: 0;
-    transform: translateY(0) scale(0.64, 0.58);
-  }
-  68% {
-    opacity: 0;
-    transform: translateY(0) scale(0.64, 0.58);
-  }
-  78% {
-    opacity: 0.95;
-    transform: translateY(0) scale(0.88, 1.04);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(28px) scale(0.42, 1.36);
-  }
-}
-
 @keyframes amida-result-label-reveal {
   0% {
     opacity: 0;
@@ -307,7 +288,7 @@ body {
   top: 24px;
   z-index: 3;
   width: 2.5px;
-  height: 18px;
+  height: 12px;
   border-radius: 9999px 9999px 70% 70%;
   background: linear-gradient(
     180deg,
@@ -349,8 +330,7 @@ body {
 .amida-completion-spark,
 .amida-color-drop,
 .amida-start-button-puff,
-.amida-start-ring,
-.amida-start-drop {
+.amida-start-ring {
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -395,10 +375,6 @@ body {
   animation: amida-start-button-puff 620ms cubic-bezier(0.2, 0.85, 0.25, 1.12);
 }
 
-.amida-start-drop {
-  animation: amida-start-drop 620ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
-}
-
 .amida-result-label {
   opacity: 0;
   animation: amida-result-label-reveal 220ms ease-out 260ms forwards;
@@ -413,7 +389,6 @@ body {
   .amida-color-drop,
   .amida-start-ring,
   .amida-start-button-puff,
-  .amida-start-drop,
   .amida-label-transfer,
   .amida-label-peel,
   .amida-participant-drain,
