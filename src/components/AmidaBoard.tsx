@@ -1,5 +1,4 @@
 import React from 'react';
-import { Check } from 'lucide-react';
 import { type AmidaBoardData, type Point, tracePath } from '../logic/amida';
 
 // High-fidelity vibrant Radix Colors for the 5 users
@@ -164,12 +163,6 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       }
     }
     return null;
-  };
-
-  // Find which participant is connected to a revealed result slot
-  const getParticipantForResult = (resultIdx: number): string | null => {
-    const partIdx = getParticipantIndexForResult(resultIdx);
-    return partIdx === null ? null : participants[partIdx];
   };
 
   const hasAnyStarted = Object.keys(startedPaths).length > 0;
@@ -372,13 +365,31 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       <div className="w-full grid grid-cols-5 gap-0 mt-[1vh]">
         {results.map((val, index) => {
           const revealed = isResultRevealed(index);
-          const partName = getParticipantForResult(index);
+          const participantIdx = getParticipantIndexForResult(index);
+          const partName = participantIdx === null ? null : participants[participantIdx];
+          const participantColor =
+            participantIdx === null
+              ? 'var(--slate-8)'
+              : USER_COLORS[participantIdx % USER_COLORS.length];
 
           return (
             <div
               key={`card-res-${index}`}
               className="text-center flex flex-col justify-between items-center pt-0.5 pb-2 px-1.5 sm:px-3 h-16 w-full bg-transparent border border-transparent"
             >
+              {revealed && partName ? (
+                <div
+                  className="text-[10px] md:text-xs font-bold w-full animate-in fade-in duration-300 flex items-center justify-center py-1"
+                  style={{ color: participantColor }}
+                >
+                  <span className="truncate">{partName}</span>
+                </div>
+              ) : (
+                <div className="text-[10px] font-bold text-[var(--slate-8)] py-1 w-full select-none flex items-center justify-center">
+                  <span className="text-xs font-bold font-outfit">?</span>
+                </div>
+              )}
+
               <input
                 type="text"
                 value={val}
@@ -388,17 +399,6 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 className="text-center font-extrabold text-[var(--slate-12)] text-xs md:text-sm bg-transparent border-b border-transparent hover:border-[var(--slate-6)] focus:border-[var(--slate-12)] outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
                 placeholder={`${index + 1}`}
               />
-
-              {revealed && partName ? (
-                <div className="text-[var(--slate-12)] text-[10px] md:text-xs font-bold w-full animate-in fade-in duration-300 flex items-center justify-center space-x-1 py-1">
-                  <Check size={12} className="text-[var(--slate-12)] shrink-0" />
-                  <span className="truncate">{partName}</span>
-                </div>
-              ) : (
-                <div className="text-[10px] font-bold text-[var(--slate-8)] py-1 w-full select-none flex items-center justify-center">
-                  <span className="text-xs font-bold font-outfit">?</span>
-                </div>
-              )}
             </div>
           );
         })}
