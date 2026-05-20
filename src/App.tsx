@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { AmidaBoard } from './components/AmidaBoard';
 import { generateAmida, tracePath, type AmidaBoardData } from './logic/amida';
-import { RefreshCw, RotateCcw } from 'lucide-react';
 
 const App: React.FC = () => {
   // Participant and Result States (initialized to defaults A-E and 1-5)
@@ -165,28 +164,26 @@ const App: React.FC = () => {
 
       {/* Action Options Row - Fixed at screen bottom */}
       <div
-        className="w-full flex items-center justify-center space-x-4 pt-[2vh] pb-[1vh] border-t border-[var(--slate-6)] shrink-0"
+        className="w-full grid grid-cols-2 gap-3 pt-[2vh] pb-[1vh] border-t border-[var(--slate-6)] shrink-0"
         style={{ maxWidth: boardMaxWidthCSS }}
       >
         <button
           onClick={handleResetTracing}
           disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
-          className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-[var(--slate-6)] bg-[var(--slate-1)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow,opacity] duration-200 ${
+          className={`inline-flex h-11 w-full items-center justify-center whitespace-nowrap px-3 rounded-2xl border border-[var(--slate-6)] bg-[var(--slate-1)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow,opacity] duration-200 ${
             tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
               ? 'opacity-40 cursor-not-allowed shadow-none'
               : 'cursor-pointer hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] hover:-translate-y-0.5'
           }`}
         >
-          <RotateCcw size={13} />
-          <span>リセット</span>
+          <span>Reset</span>
         </button>
 
         <button
           onClick={handleRecreateBoard}
-          className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-[var(--slate-6)] bg-[var(--slate-1)] hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow] duration-200 cursor-pointer hover:-translate-y-0.5"
+          className="inline-flex h-11 w-full items-center justify-center whitespace-nowrap px-3 rounded-2xl border border-[var(--slate-6)] bg-[var(--slate-1)] hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow] duration-200 cursor-pointer hover:-translate-y-0.5"
         >
-          <RefreshCw size={13} />
-          <span>あみだを作り直す</span>
+          <span>Shuffle</span>
         </button>
       </div>
     </div>
