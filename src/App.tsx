@@ -68,6 +68,13 @@ const App: React.FC = () => {
       [colIndex]: true,
     }));
 
+    // Ensure the first render after clicking starts at the top instead of
+    // briefly treating the path as completed before requestAnimationFrame runs.
+    setActiveTracings((prev) => ({
+      ...prev,
+      [colIndex]: 0,
+    }));
+
     // Record the start order
     setStartedOrder((prev) => [...prev, colIndex]);
 
