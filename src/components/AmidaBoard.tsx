@@ -10,6 +10,15 @@ const USER_COLORS = [
   '#8e4ec6', // Violet (Vibrant Purple)
 ];
 
+// Softer Radix palette step for disabled completed start buttons.
+const USER_COLORS_LIGHT = [
+  '#fdbdaf', // Tomato 6
+  '#f3d673', // Amber 6
+  '#acdec8', // Jade 6
+  '#acd8fc', // Blue 6
+  '#e0c4f4', // Purple 6
+];
+
 interface AmidaBoardProps {
   boardData: AmidaBoardData;
   participants: string[];
@@ -172,6 +181,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       {/* Top: Participant Selection Cards */}
       <div className="w-full grid grid-cols-5 gap-0 mb-[1vh]">
         {participants.map((name, index) => {
+          const userColor = USER_COLORS[index % USER_COLORS.length];
+
           return (
             <div
               key={`card-part-${index}`}
@@ -183,7 +194,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 onChange={(e) => onChangeParticipant(index, e.target.value)}
                 disabled={hasAnyStarted}
                 maxLength={12}
-                className="text-center font-bold text-[var(--slate-12)] text-xs md:text-sm bg-transparent border-b border-transparent hover:border-[var(--slate-6)] focus:border-[var(--slate-12)] outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                className="text-center font-bold text-xs md:text-sm bg-transparent border-b border-transparent hover:border-[var(--slate-6)] focus:border-[var(--slate-12)] outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                style={{ color: userColor }}
                 placeholder={String.fromCharCode(65 + index)}
               />
             </div>
@@ -283,6 +295,9 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             const pt = getSvgCoords({ x: colIdx, y: 0 });
             const isTraced = !!startedPaths[colIdx];
             const userColor = USER_COLORS[colIdx % USER_COLORS.length];
+            const buttonColor = isTraced
+              ? USER_COLORS_LIGHT[colIdx % USER_COLORS_LIGHT.length]
+              : userColor;
 
             const isUnclickable = isTraced;
             const buttonClass = isUnclickable
@@ -303,11 +318,11 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 <circle
                   cx={pt.x}
                   cy={pt.y}
-                  r={12}
+                  r={13.25}
                   fill="#ffffff"
-                  stroke={userColor}
-                  strokeWidth={2}
-                  className="transition-all duration-150 group-hover:stroke-[2.8] group-hover:fill-[var(--slate-2)]"
+                  stroke={buttonColor}
+                  strokeWidth={3}
+                  className="transition-all duration-150 group-hover:stroke-[3.3] group-hover:fill-[var(--slate-2)]"
                 />
 
                 {/* Draw Play icon (triangle) if untraced, or Checkmark if traced */}
@@ -324,7 +339,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                       height="10"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke={userColor}
+                      stroke={buttonColor}
                       strokeWidth="4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
