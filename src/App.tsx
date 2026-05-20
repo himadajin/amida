@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AmidaBoard } from './components/AmidaBoard';
 import { generateAmida, tracePath, type AmidaBoardData } from './logic/amida';
-import { RefreshCw, RotateCcw, ArrowRight } from 'lucide-react';
+import { RefreshCw, RotateCcw } from 'lucide-react';
 
 const App: React.FC = () => {
   // Participant and Result States (initialized to defaults A-E and 1-5)
@@ -123,11 +123,9 @@ const App: React.FC = () => {
     setActiveTracings({});
   };
 
-  const isCompleted = tracedPaths.size === boardData.cols;
-
   return (
-    <div className="min-h-screen py-8 md:py-16 flex flex-col justify-center items-center">
-      <div className="w-full max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="h-screen w-screen overflow-hidden flex flex-col justify-between items-center pt-6 pb-3 px-4 bg-gradient-to-br from-slate-50 via-slate-100/50 to-slate-200/30">
+      <div className="w-full max-w-2xl flex-grow flex flex-col justify-center items-center pt-8 animate-in fade-in duration-500">
         {/* Core Amida Board (direct in-place inputs inside labels) */}
         <AmidaBoard
           boardData={boardData}
@@ -140,78 +138,30 @@ const App: React.FC = () => {
           onChangeParticipant={handleParticipantChange}
           onChangeResult={handleResultChange}
         />
+      </div>
 
-        {/* Action Options Row */}
-        <div className="flex items-center justify-center space-x-4">
-          <button
-            onClick={handleResetTracing}
-            disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
-            className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all ${
-              tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
-                ? 'opacity-50 cursor-not-allowed shadow-none'
-                : 'cursor-pointer hover:-translate-y-0.5'
-            }`}
-          >
-            <RotateCcw size={13} />
-            <span>リセット</span>
-          </button>
+      {/* Action Options Row - Fixed at screen bottom */}
+      <div className="w-full max-w-2xl flex items-center justify-center space-x-4 pt-2.5 pb-0.5 border-t border-slate-100/60 shrink-0">
+        <button
+          onClick={handleResetTracing}
+          disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
+          className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all ${
+            tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
+              ? 'opacity-50 cursor-not-allowed shadow-none'
+              : 'cursor-pointer hover:-translate-y-0.5'
+          }`}
+        >
+          <RotateCcw size={13} />
+          <span>リセット</span>
+        </button>
 
-          <button
-            onClick={handleRecreateBoard}
-            className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all cursor-pointer hover:-translate-y-0.5"
-          >
-            <RefreshCw size={13} />
-            <span>あみだを作り直す</span>
-          </button>
-        </div>
-
-        {/* Collapsible Inline Result Mappings (revealed below the board when completed) */}
-        {isCompleted && (
-          <div className="max-w-2xl mx-auto w-full px-4 animate-in fade-in slide-in-from-bottom-6 duration-500">
-            <div className="py-6 space-y-4">
-              <h3 className="font-outfit text-base font-extrabold text-slate-700 border-b border-slate-200 pb-3 text-center">
-                結果一覧
-              </h3>
-
-              <div className="divide-y divide-slate-200">
-                {Array.from(tracedPaths.entries())
-                  .map(([partIdx, resIdx]) => ({
-                    partIdx,
-                    partName: participants[partIdx] || String.fromCharCode(65 + partIdx),
-                    resIdx,
-                    resName: results[resIdx] || `${resIdx + 1}`,
-                  }))
-                  .sort((a, b) => a.partIdx - b.partIdx)
-                  .map((mapping, idx) => (
-                     <div
-                       key={`mapping-${idx}`}
-                       className="flex items-center justify-between py-3.5 px-2 rounded-2xl hover:bg-slate-50/50 transition-colors"
-                     >
-                       <div className="flex items-center space-x-3">
-                         <span className="w-6 h-6 flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold font-outfit">
-                           {String.fromCharCode(65 + mapping.partIdx)}
-                         </span>
-                         <span className="font-bold text-slate-700 text-sm">
-                           {mapping.partName}
-                         </span>
-                       </div>
-
-                       <ArrowRight size={14} className="text-slate-300" />
-
-                       <div className="flex items-center space-x-3 text-right">
-                         <span className="font-extrabold text-indigo-600 text-sm">
-                           {mapping.resName}
-                         </span>
-                         <span className="w-6 h-6 flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold font-outfit">
-                           {mapping.resIdx + 1}
-                         </span>
-                       </div>
-                     </div>
-                  ))}
-              </div>
-            </div>
-          </div>
-        )}
+        <button
+          onClick={handleRecreateBoard}
+          className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all cursor-pointer hover:-translate-y-0.5"
+        >
+          <RefreshCw size={13} />
+          <span>あみだを作り直す</span>
+        </button>
       </div>
     </div>
   );
