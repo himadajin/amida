@@ -301,8 +301,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
 
             const isUnclickable = isTraced;
             const buttonClass = isUnclickable
-              ? 'pointer-events-none outline-none'
-              : 'group cursor-pointer outline-none';
+              ? 'pointer-events-none outline-none -translate-y-px transition-transform duration-150'
+              : 'group cursor-pointer outline-none transition-transform duration-150 hover:-translate-y-px';
 
             return (
               <g

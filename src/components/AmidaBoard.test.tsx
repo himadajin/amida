@@ -9,14 +9,17 @@ const boardData: AmidaBoardData = {
   horizontalLines: [],
 };
 
-const renderBoard = (tracedPaths: Map<number, number>) => {
+const renderBoard = (
+  tracedPaths: Map<number, number>,
+  startedPaths: Record<number, boolean> = {},
+) => {
   render(
     <AmidaBoard
       boardData={boardData}
       participants={['A', 'B', 'C', 'D', 'E']}
       results={['1', '2', '3', '4', '5']}
       tracedPaths={tracedPaths}
-      startedPaths={{}}
+      startedPaths={startedPaths}
       activeTracings={{}}
       startedOrder={[]}
       onStartTrace={vi.fn()}
@@ -33,5 +36,11 @@ describe('AmidaBoard', () => {
 
     expect(screen.getByTestId('bottom-dot-3')).toHaveAttribute('fill', '#0090ff');
     expect(screen.getByTestId('bottom-dot-0')).toHaveAttribute('fill', 'var(--slate-7)');
+  });
+
+  it('keeps a started trace button at its hover elevation', () => {
+    renderBoard(new Map(), { 0: true });
+
+    expect(screen.getByRole('button', { name: 'たどり完了' })).toHaveClass('-translate-y-px');
   });
 });
