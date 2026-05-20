@@ -390,7 +390,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 </div>
               ) : (
                 <div className="text-[10px] font-semibold text-slate-300 py-1 bg-slate-100/30 border border-slate-100/10 rounded-xl w-full select-none flex items-center justify-center">
-                  <span>未到達</span>
+                  <span className="text-xs font-bold font-outfit">?</span>
                 </div>
               )}
             </div>
