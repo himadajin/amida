@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const svgHeight = 24 + (boardData.levels + 1) * levelHeight + 8;
   const aspectRatio = 600 / svgHeight;
   const boardMaxWidthCSS = `min(600px, max(280px, calc((85vh - 160px) * ${aspectRatio})))`;
+  const startPreludeDurationMs = 560;
 
   // Handle participant input changes in-place
   const handleParticipantChange = (index: number, value: string) => {
@@ -68,6 +69,23 @@ const App: React.FC = () => {
       [colIndex]: true,
     }));
 
+    const currentResetCount = resetCounterRef.current;
+
+    window.setTimeout(() => {
+      if (resetCounterRef.current !== currentResetCount) {
+        return;
+      }
+
+      startPathTrace(colIndex, path, duration, currentResetCount);
+    }, startPreludeDurationMs);
+  };
+
+  const startPathTrace = (
+    colIndex: number,
+    path: ReturnType<typeof tracePath>,
+    duration: number,
+    currentResetCount: number,
+  ) => {
     // Ensure the first render after clicking starts at the top instead of
     // briefly treating the path as completed before requestAnimationFrame runs.
     setActiveTracings((prev) => ({
@@ -79,7 +97,6 @@ const App: React.FC = () => {
     setStartedOrder((prev) => [...prev, colIndex]);
 
     let start: number | null = null;
-    const currentResetCount = resetCounterRef.current;
 
     const animate = (timestamp: number) => {
       // Abort if board was reset or recreated

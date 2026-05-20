@@ -45,6 +45,21 @@ describe('AmidaBoard', () => {
     expect(screen.queryByTestId('completion-effect-0')).not.toBeInTheDocument();
   });
 
+  it('renders unstarted top buttons in black', () => {
+    renderBoard(new Map());
+
+    expect(screen.getByTestId('top-button-ring-0')).toHaveAttribute('stroke', 'var(--slate-11)');
+  });
+
+  it('dims a started participant label and leaves a light button color trail', () => {
+    renderBoard(new Map(), { 0: true });
+
+    expect(screen.getByTestId('participant-input-0')).toHaveStyle({ color: 'var(--slate-9)' });
+    expect(screen.getByTestId('top-button-ring-0')).toHaveAttribute('stroke', '#fdbdaf');
+    expect(screen.getByTestId('start-effect-0')).toBeInTheDocument();
+    expect(screen.getByTestId('label-transfer-0')).toBeInTheDocument();
+  });
+
   it('keeps a started trace button at its hover elevation', () => {
     renderBoard(new Map(), { 0: true });
 

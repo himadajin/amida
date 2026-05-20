@@ -182,22 +182,31 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       <div className="w-full grid grid-cols-5 gap-0 mb-[1vh]">
         {participants.map((name, index) => {
           const userColor = USER_COLORS[index % USER_COLORS.length];
+          const labelColor = startedPaths[index] ? 'var(--slate-9)' : userColor;
 
           return (
             <div
               key={`card-part-${index}`}
-              className="text-center flex flex-col items-center pt-1 pb-1 px-1.5 sm:px-3 rounded-2xl w-full"
+              className="relative text-center flex flex-col items-center pt-1 pb-1 px-1.5 sm:px-3 rounded-2xl w-full overflow-visible"
             >
               <input
+                data-testid={`participant-input-${index}`}
                 type="text"
                 value={name}
                 onChange={(e) => onChangeParticipant(index, e.target.value)}
                 disabled={hasAnyStarted}
                 maxLength={12}
                 className="text-center font-bold text-xs md:text-sm bg-transparent border-b border-transparent hover:border-[var(--slate-6)] focus:border-[var(--slate-12)] outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
-                style={{ color: userColor }}
+                style={{ color: labelColor }}
                 placeholder={String.fromCharCode(65 + index)}
               />
+              {startedPaths[index] && (
+                <span
+                  data-testid={`label-transfer-${index}`}
+                  className="amida-label-transfer"
+                  style={{ backgroundColor: userColor }}
+                />
+              )}
             </div>
           );
         })}
@@ -297,7 +306,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             const userColor = USER_COLORS[colIdx % USER_COLORS.length];
             const buttonColor = isTraced
               ? USER_COLORS_LIGHT[colIdx % USER_COLORS_LIGHT.length]
-              : userColor;
+              : 'var(--slate-11)';
 
             const isUnclickable = isTraced;
             const buttonClass = isUnclickable
@@ -314,21 +323,57 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 aria-disabled={isUnclickable}
                 aria-label={isTraced ? 'たどり完了' : 'たどる'}
               >
+                {isTraced && (
+                  <g
+                    data-testid={`start-effect-${colIdx}`}
+                    className="amida-start-effect"
+                    style={{ color: userColor }}
+                  >
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y}
+                      r={10}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      className="amida-start-ring"
+                    />
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y}
+                      r={4.1}
+                      fill="currentColor"
+                      className="amida-start-drop"
+                    />
+                  </g>
+                )}
+
                 {/* Circular Button Background: Hollow wireframe, thicker on group hover */}
                 <circle
+                  data-testid={`top-button-ring-${colIdx}`}
                   cx={pt.x}
                   cy={pt.y}
                   r={13.25}
                   fill="#ffffff"
                   stroke={buttonColor}
                   strokeWidth={3}
-                  className="transition-all duration-150 group-hover:stroke-[3.3] group-hover:fill-[var(--slate-2)]"
+                  className={
+                    isTraced
+                      ? 'amida-start-button-puff transition-all duration-150 group-hover:stroke-[3.3] group-hover:fill-[var(--slate-2)]'
+                      : 'transition-all duration-150 group-hover:stroke-[3.3] group-hover:fill-[var(--slate-2)]'
+                  }
                 />
 
                 {/* Draw Play icon (triangle) if untraced, or Checkmark if traced */}
                 {!isTraced ? (
                   <g transform={`translate(${pt.x - 5}, ${pt.y - 5})`}>
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill={userColor} stroke="none">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill={buttonColor}
+                      stroke="none"
+                    >
                       <polygon points="6 3 20 12 6 21 6 3" />
                     </svg>
                   </g>

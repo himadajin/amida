@@ -163,6 +163,74 @@ body {
   }
 }
 
+@keyframes amida-label-transfer {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.7, 0.7);
+  }
+  16% {
+    opacity: 0.95;
+    transform: translate(-50%, 5px) scale(0.82, 1.12);
+  }
+  76% {
+    opacity: 0.95;
+    transform: translate(-50%, 32px) scale(0.72, 1.24);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 42px) scale(0.62, 0.62);
+  }
+}
+
+@keyframes amida-start-button-puff {
+  0% {
+    transform: scale(1);
+  }
+  36% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.13);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes amida-start-ring {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  46% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.28);
+  }
+}
+
+@keyframes amida-start-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.64, 0.64);
+  }
+  42% {
+    opacity: 0;
+    transform: translateY(0) scale(0.64, 0.64);
+  }
+  58% {
+    opacity: 0.95;
+    transform: translateY(1px) scale(0.86, 1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.42, 1.42);
+  }
+}
+
 @keyframes amida-result-label-reveal {
   0% {
     opacity: 0;
@@ -178,10 +246,30 @@ body {
   pointer-events: none;
 }
 
+.amida-start-effect {
+  pointer-events: none;
+}
+
+.amida-label-transfer {
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  z-index: 3;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  pointer-events: none;
+  transform-origin: center;
+  animation: amida-label-transfer 460ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
 .amida-bottom-dot-complete,
 .amida-completion-ring,
 .amida-completion-spark,
-.amida-color-drop {
+.amida-color-drop,
+.amida-start-button-puff,
+.amida-start-ring,
+.amida-start-drop {
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -218,6 +306,18 @@ body {
   animation: amida-color-drop 520ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
 }
 
+.amida-start-ring {
+  animation: amida-start-ring 520ms ease-out forwards;
+}
+
+.amida-start-button-puff {
+  animation: amida-start-button-puff 520ms cubic-bezier(0.2, 0.85, 0.25, 1.12);
+}
+
+.amida-start-drop {
+  animation: amida-start-drop 520ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
 .amida-result-label {
   opacity: 0;
   animation: amida-result-label-reveal 220ms ease-out 260ms forwards;
@@ -230,11 +330,16 @@ body {
   .amida-completion-ring,
   .amida-completion-spark,
   .amida-color-drop,
+  .amida-start-ring,
+  .amida-start-button-puff,
+  .amida-start-drop,
+  .amida-label-transfer,
   .amida-result-label {
     animation: none;
   }
 
-  .amida-completion-effect {
+  .amida-completion-effect,
+  .amida-start-effect {
     display: none;
   }
 
