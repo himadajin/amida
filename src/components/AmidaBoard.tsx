@@ -12,6 +12,7 @@ interface AmidaBoardProps {
   onStartTrace: (col: number) => void;
   onChangeParticipant: (index: number, value: string) => void;
   onChangeResult: (index: number, value: string) => void;
+  levelHeight: number;
 }
 
 export const AmidaBoard: React.FC<AmidaBoardProps> = ({
@@ -24,6 +25,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   onStartTrace,
   onChangeParticipant,
   onChangeResult,
+  levelHeight,
 }) => {
   const { cols, levels, horizontalLines } = boardData;
 
@@ -33,7 +35,6 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   const startX = colWidth / 2;
 
   const startY = 24;
-  const levelHeight = 35;
   const endY = startY + (levels + 1) * levelHeight;
   const svgHeight = endY + 8;
 
@@ -113,9 +114,9 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   const hasAnyStarted = Object.keys(startedPaths).length > 0;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 flex flex-col items-center">
+    <div className="w-full flex flex-col items-center">
       {/* Top: Participant Selection Cards */}
-      <div className="w-full grid grid-cols-5 gap-0 mb-1">
+      <div className="w-full grid grid-cols-5 gap-0 mb-[1vh]">
         {participants.map((name, index) => {
           return (
             <div
@@ -137,7 +138,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       </div>
 
       {/* Middle: SVG Amida Board */}
-      <div className="w-full py-0 mb-2 flex justify-center">
+      <div className="w-full py-0 mb-[1.5vh] flex justify-center">
         <svg
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           className="w-full h-auto select-none"
@@ -337,7 +338,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       </div>
 
       {/* Bottom: Result Slots */}
-      <div className="w-full grid grid-cols-5 gap-0 mt-1">
+      <div className="w-full grid grid-cols-5 gap-0 mt-[1vh]">
         {results.map((val, index) => {
           const revealed = isResultRevealed(index);
           const partName = getParticipantForResult(index);
