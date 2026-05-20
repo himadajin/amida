@@ -57,6 +57,7 @@ describe('AmidaBoard', () => {
     expect(screen.getByTestId('participant-input-0')).toHaveClass('amida-participant-drain');
     expect(screen.getByTestId('top-button-ring-0')).toHaveAttribute('stroke', '#fdbdaf');
     expect(screen.getByTestId('start-effect-0')).toBeInTheDocument();
+    expect(screen.getByTestId('label-peel-0')).toBeInTheDocument();
     expect(screen.getByTestId('label-transfer-0')).toBeInTheDocument();
   });
 

@@ -208,11 +208,21 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 placeholder={String.fromCharCode(65 + index)}
               />
               {isStarted && (
-                <span
-                  data-testid={`label-transfer-${index}`}
-                  className="amida-label-transfer"
-                  style={{ color: userColor }}
-                />
+                <>
+                  <span
+                    aria-hidden="true"
+                    data-testid={`label-peel-${index}`}
+                    className="amida-label-peel text-xs md:text-sm font-bold"
+                    style={{ color: userColor }}
+                  >
+                    {name || String.fromCharCode(65 + index)}
+                  </span>
+                  <span
+                    data-testid={`label-transfer-${index}`}
+                    className="amida-label-transfer"
+                    style={{ color: userColor }}
+                  />
+                </>
               )}
             </div>
           );
