@@ -38,8 +38,23 @@ const App: React.FC = () => {
   const handleStartTrace = (colIndex: number) => {
     if (activeTracing !== null) return;
 
+    const path = tracePath(boardData, colIndex);
+    const colWidth = 600 / boardData.cols;
+    const levelHeight = 35;
+
+    // Calculate total physical path length in SVG pixels
+    let physicalLength = 0;
+    for (let i = 0; i < path.length - 1; i++) {
+      const dx = (path[i + 1].x - path[i].x) * colWidth;
+      const dy = (path[i + 1].y - path[i].y) * levelHeight;
+      physicalLength += Math.sqrt(dx * dx + dy * dy);
+    }
+
+    // Fixed velocity (900 pixels per second)
+    const speed = 900;
+    const duration = (physicalLength / speed) * 1000;
+
     let start: number | null = null;
-    const duration = 2200; // Smooth 2.2 seconds tracing
 
     const animate = (timestamp: number) => {
       if (!start) start = timestamp;
@@ -52,7 +67,6 @@ const App: React.FC = () => {
         requestAnimationFrame(animate);
       } else {
         // Animation finished
-        const path = tracePath(boardData, colIndex);
         const finalX = path[path.length - 1].x;
 
         setTracedPaths((prev) => {

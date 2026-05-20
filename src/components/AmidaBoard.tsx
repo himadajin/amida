@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, RotateCcw, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { type AmidaBoardData, type Point, tracePath } from '../logic/amida';
 
 interface AmidaBoardProps {
@@ -30,7 +30,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   const colWidth = svgWidth / cols;
   const startX = colWidth / 2;
 
-  const startY = 8;
+  const startY = 24;
   const levelHeight = 35;
   const endY = startY + (levels + 1) * levelHeight;
   const svgHeight = endY + 8;
@@ -55,7 +55,9 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
     for (let i = 0; i < path.length - 1; i++) {
       const p1 = path[i];
       const p2 = path[i + 1];
-      const len = Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
+      const dx = (p2.x - p1.x) * colWidth;
+      const dy = (p2.y - p1.y) * levelHeight;
+      const len = Math.sqrt(dx ** 2 + dy ** 2);
       segments.push({ p1, p2, len });
       totalLength += len;
     }
@@ -111,55 +113,20 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       {/* Top: Participant Selection Cards */}
       <div className="w-full grid grid-cols-5 gap-0 mb-1">
         {participants.map((name, index) => {
-          const isTraced = tracedPaths.has(index);
-          const isActive = activeTracing?.col === index;
           const isAnyTracing = activeTracing !== null;
 
           return (
             <div
               key={`card-part-${index}`}
-              className={`text-center flex flex-col items-center pt-2 pb-0.5 px-1.5 sm:px-3 transition-all duration-300 rounded-2xl w-full ${
-                isActive ? 'bg-indigo-50/45' : ''
-              }`}
+              className="text-center flex flex-col items-center pt-1 pb-1 px-1.5 sm:px-3 rounded-2xl w-full"
             >
-              <button
-                onClick={() => onStartTrace(index)}
-                disabled={isAnyTracing}
-                className={`w-full py-1.5 px-2 rounded-xl flex items-center justify-center space-x-1 text-[11px] font-bold transition-all shadow-sm ${
-                  isActive
-                    ? 'bg-indigo-100 text-indigo-700 cursor-not-allowed'
-                    : isTraced
-                    ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 cursor-pointer'
-                    : isAnyTracing
-                    ? 'bg-slate-50 text-slate-300 cursor-not-allowed shadow-none'
-                    : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-100 cursor-pointer hover:-translate-y-0.5'
-                }`}
-              >
-                {isActive ? (
-                  <span className="flex items-center space-x-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-ping" />
-                    <span>たどり中</span>
-                  </span>
-                ) : isTraced ? (
-                  <>
-                    <RotateCcw size={11} />
-                    <span className="hidden sm:inline">もう一度</span>
-                  </>
-                ) : (
-                  <>
-                    <Play size={10} fill="currentColor" />
-                    <span>たどる</span>
-                  </>
-                )}
-              </button>
-
               <input
                 type="text"
                 value={name}
                 onChange={(e) => onChangeParticipant(index, e.target.value)}
                 disabled={isAnyTracing}
                 maxLength={12}
-                className="text-center font-bold text-slate-700 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full mt-2 px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                className="text-center font-bold text-slate-700 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
                 placeholder={String.fromCharCode(65 + index)}
               />
             </div>
@@ -285,17 +252,95 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             })()
           )}
 
-          {/* Column indicators at the top */}
+          {/* Column indicators / clickable action buttons at the top */}
           {Array.from({ length: cols }).map((_, colIdx) => {
             const pt = getSvgCoords({ x: colIdx, y: 0 });
+            const isTraced = tracedPaths.has(colIdx);
+            const isActive = activeTracing?.col === colIdx;
+            const isAnyTracing = activeTracing !== null;
+
+            // Define styles based on button state to match requested designs perfectly
+            let circleFill = "#4f46e5"; // Indigo-600 (Play Button)
+            let circleStroke = "#e0e7ff"; // Indigo-100
+            let circleClass = "hover:fill-[#6366f1] transition-all"; // Hover: Indigo-500
+            let iconType = "play";
+            let iconColor = "#ffffff";
+
+            if (isTraced) {
+              // Traced/Completed: Light Indigo bg, subtle indigo stroke, Indigo checkmark (already pressed look)
+              circleFill = "#f0f2fe"; // Indigo-50
+              circleStroke = "#e0e7ff"; // Indigo-100
+              circleClass = "";
+              iconType = "check";
+              iconColor = "#4f46e5"; // Indigo-600
+            } else if (isActive) {
+              // Currently active/tracing: Light indigo bg, indigo stroke, Play icon (disabled/flat)
+              circleFill = "#f0f2fe";
+              circleStroke = "#4f46e5";
+              circleClass = "";
+              iconType = "play_active";
+              iconColor = "#4f46e5";
+            } else if (isAnyTracing) {
+              // Disabled because another column is tracing: Greyed out
+              circleFill = "#f8fafc"; // Slate-50
+              circleStroke = "#e2e8f0"; // Slate-200
+              circleClass = "";
+              iconType = "play_disabled";
+              iconColor = "#cbd5e1"; // Slate-300
+            }
+
+            // Traced columns or columns while tracing is active are unclickable
+            const isUnclickable = isTraced || isAnyTracing;
+            const buttonClass = isUnclickable
+              ? "pointer-events-none outline-none"
+              : "transition-all duration-150 cursor-pointer outline-none";
+
             return (
-              <circle
-                key={`top-dot-${colIdx}`}
-                cx={pt.x}
-                cy={pt.y}
-                r={5}
-                fill="#cbd5e1"
-              />
+              <g
+                key={`top-btn-${colIdx}`}
+                className={buttonClass}
+                onClick={() => !isUnclickable && onStartTrace(colIdx)}
+                tabIndex={isUnclickable ? -1 : 0}
+                role="button"
+                aria-disabled={isUnclickable}
+                aria-label={isTraced ? "たどり完了" : "たどる"}
+              >
+                {/* Circular Button Background (Appropriate Radius 12) */}
+                <circle
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={12}
+                  fill={circleFill}
+                  stroke={circleStroke}
+                  strokeWidth={1.5}
+                  className={circleClass}
+                />
+
+                {/* Centered Icons (Width 12, Height 12) */}
+                {(iconType === "play" || iconType === "play_active") && (
+                  <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill={iconColor} stroke="none">
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                  </g>
+                )}
+
+                {iconType === "play_disabled" && (
+                  <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill={iconColor} stroke="none">
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                  </g>
+                )}
+
+                {iconType === "check" && (
+                  <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </g>
+                )}
+              </g>
             );
           })}
 
