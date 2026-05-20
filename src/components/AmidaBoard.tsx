@@ -27,8 +27,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
 
   // Layout parameters
   const svgWidth = 600;
-  const colWidth = Math.min(100, Math.floor((svgWidth - 100) / (cols - 1)));
-  const startX = (svgWidth - (cols - 1) * colWidth) / 2;
+  const colWidth = svgWidth / cols;
+  const startX = colWidth / 2;
 
   const startY = 60;
   const levelHeight = 35;
@@ -107,9 +107,9 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 flex flex-col items-center">
+    <div className="w-full max-w-2xl mx-auto px-4 flex flex-col items-center">
       {/* Top: Participant Selection Cards */}
-      <div className="w-full grid grid-cols-5 gap-2 md:gap-4 mb-6">
+      <div className="w-full grid grid-cols-5 gap-0 mb-6">
         {participants.map((name, index) => {
           const isTraced = tracedPaths.has(index);
           const isActive = activeTracing?.col === index;
@@ -118,12 +118,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           return (
             <div
               key={`card-part-${index}`}
-              className={`glass-card rounded-2xl p-2.5 md:p-4 text-center flex flex-col items-center justify-between border-2 transition-all duration-300 ${
-                isActive
-                  ? 'border-indigo-500 ring-4 ring-indigo-50 bg-indigo-50/20'
-                  : isTraced
-                  ? 'border-slate-200 bg-slate-50/50'
-                  : 'border-transparent hover:border-slate-200'
+              className={`text-center flex flex-col items-center justify-between py-2 px-1.5 sm:px-3 transition-all duration-300 rounded-2xl ${
+                isActive ? 'bg-indigo-50/45' : ''
               }`}
             >
               <div className="flex flex-col items-center space-y-1 mb-2.5 w-full">
@@ -177,10 +173,10 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       </div>
 
       {/* Middle: SVG Amida Board */}
-      <div className="w-full glass-card rounded-3xl p-4 md:p-6 mb-6 flex justify-center shadow-lg bg-white/40">
+      <div className="w-full py-4 mb-6 flex justify-center">
         <svg
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          className="w-full max-w-[560px] h-auto select-none"
+          className="w-full h-auto select-none"
         >
           {/* Filters for premium glow effects */}
           <defs>
@@ -325,7 +321,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       </div>
 
       {/* Bottom: Result Slots */}
-      <div className="w-full grid grid-cols-5 gap-2 md:gap-4 mt-2">
+      <div className="w-full grid grid-cols-5 gap-0 mt-2">
         {results.map((val, index) => {
           const revealed = isResultRevealed(index);
           const partName = getParticipantForResult(index);
@@ -333,10 +329,8 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           return (
             <div
               key={`card-res-${index}`}
-              className={`glass-card rounded-2xl p-2 md:p-4 text-center border-2 flex flex-col justify-between items-center transition-all duration-500 h-28 ${
-                revealed
-                  ? 'border-indigo-100 bg-indigo-50/5'
-                  : 'border-slate-100/50 bg-slate-50/20'
+              className={`text-center flex flex-col justify-between items-center py-2 px-1.5 sm:px-3 h-28 w-full rounded-2xl transition-all duration-500 ${
+                revealed ? 'bg-indigo-50/45' : ''
               }`}
             >
               <div className="flex flex-col items-center space-y-0.5 w-full">

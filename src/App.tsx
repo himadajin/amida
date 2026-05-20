@@ -130,12 +130,12 @@ const App: React.FC = () => {
         {/* Collapsible Inline Result Mappings (revealed below the board when completed) */}
         {isCompleted && (
           <div className="max-w-2xl mx-auto w-full px-4 animate-in fade-in slide-in-from-bottom-6 duration-500">
-            <div className="glass-card rounded-3xl p-6 md:p-8 space-y-4 shadow-lg bg-white/60">
-              <h3 className="font-outfit text-base font-extrabold text-slate-700 border-b border-slate-100 pb-3 text-center">
+            <div className="py-6 space-y-4">
+              <h3 className="font-outfit text-base font-extrabold text-slate-700 border-b border-slate-200 pb-3 text-center">
                 結果一覧
               </h3>
 
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-200">
                 {Array.from(tracedPaths.entries())
                   .map(([partIdx, resIdx]) => ({
                     partIdx,
