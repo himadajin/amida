@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { AmidaBoard } from './components/AmidaBoard';
 import { generateAmida, tracePath, type AmidaBoardData } from './logic/amida';
 import { RefreshCw, RotateCcw } from 'lucide-react';
@@ -18,43 +18,11 @@ const App: React.FC = () => {
   const [activeTracings, setActiveTracings] = useState<Record<number, number>>({});
   const resetCounterRef = useRef<number>(0);
 
-  // Dynamically calculate level height and max board width based on window height and levels
-  const [levelHeight, setLevelHeight] = useState(35);
-  const [boardMaxWidth, setBoardMaxWidth] = useState(600);
-
-  useEffect(() => {
-    const calculateLayout = () => {
-      const H = window.innerHeight;
-      
-      // Dynamic padding overhead (13.5% of viewport height)
-      const dynamicPadding = H * 0.135;
-      // Fixed heights overhead (inputs: 32px + 80px, bottom buttons: 40px, SVG startY/endPadding: 32px)
-      const fixedOverhead = 184; 
-      
-      const availableHeight = H - dynamicPadding - fixedOverhead;
-      const levelCount = boardData.levels + 1;
-      
-      // Calculate level height
-      const calculatedHeight = availableHeight / levelCount;
-      // Clamp between 18px and 50px
-      const clampedHeight = Math.max(18, Math.min(50, calculatedHeight));
-      setLevelHeight(clampedHeight);
-
-      // SVG size calculations
-      const svgWidth = 600;
-      const svgHeight = 24 + levelCount * clampedHeight + 8;
-
-      // Calculate max board width to fit within availableHeight
-      const calculatedWidth = availableHeight * (svgWidth / svgHeight);
-      // Clamp board width between 280px and 600px
-      const clampedWidth = Math.max(280, Math.min(600, calculatedWidth));
-      setBoardMaxWidth(clampedWidth);
-    };
-
-    calculateLayout();
-    window.addEventListener('resize', calculateLayout);
-    return () => window.removeEventListener('resize', calculateLayout);
-  }, [boardData.levels]);
+  // Core layout metrics - entirely CSS-driven and evaluated by the browser natively
+  const levelHeight = 40;
+  const svgHeight = 24 + (boardData.levels + 1) * levelHeight + 8;
+  const aspectRatio = 600 / svgHeight;
+  const boardMaxWidthCSS = `min(600px, max(280px, calc((85vh - 160px) * ${aspectRatio})))`;
 
   // Handle participant input changes in-place
   const handleParticipantChange = (index: number, value: string) => {
@@ -164,7 +132,7 @@ const App: React.FC = () => {
     <div className="h-screen w-screen overflow-hidden flex flex-col justify-between items-center pt-[3vh] pb-[2vh] px-4 bg-gradient-to-br from-slate-50 via-slate-100/50 to-slate-200/30">
       <div 
         className="w-full flex-grow flex flex-col justify-center items-center pt-[2vh] animate-in fade-in duration-500"
-        style={{ maxWidth: `${boardMaxWidth}px` }}
+        style={{ maxWidth: boardMaxWidthCSS }}
       >
         {/* Core Amida Board (direct in-place inputs inside labels) */}
         <AmidaBoard
@@ -184,7 +152,7 @@ const App: React.FC = () => {
       {/* Action Options Row - Fixed at screen bottom */}
       <div 
         className="w-full flex items-center justify-center space-x-4 pt-[2vh] pb-[1vh] border-t border-slate-100/60 shrink-0"
-        style={{ maxWidth: `${boardMaxWidth}px` }}
+        style={{ maxWidth: boardMaxWidthCSS }}
       >
         <button
           onClick={handleResetTracing}
