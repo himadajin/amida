@@ -118,7 +118,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 isActive
                   ? 'border-indigo-500 ring-4 ring-indigo-50 bg-indigo-50/20'
                   : isTraced
-                  ? 'border-emerald-200 bg-emerald-50/10'
+                  ? 'border-slate-200 bg-slate-50/50'
                   : 'border-transparent hover:border-slate-200'
               }`}
             >
@@ -138,7 +138,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                   isActive
                     ? 'bg-indigo-100 text-indigo-700 cursor-not-allowed'
                     : isTraced
-                    ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100 cursor-pointer'
+                    ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 cursor-pointer'
                     : isAnyTracing
                     ? 'bg-slate-50 text-slate-300 cursor-not-allowed shadow-none'
                     : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-100 cursor-pointer hover:-translate-y-0.5'
@@ -182,10 +182,9 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
               </feMerge>
             </filter>
             
-            <linearGradient id="purplePinkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#6366f1" />
-              <stop offset="50%" stopColor="#a855f7" />
-              <stop offset="100%" stopColor="#ec4899" />
+            <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#4f46e5" />
+              <stop offset="100%" stopColor="#818cf8" />
             </linearGradient>
             
             <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -262,7 +261,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                   <polyline
                     points={getPolylinePointsStr(subPath)}
                     fill="none"
-                    stroke="url(#purplePinkGrad)"
+                    stroke="url(#indigoGrad)"
                     strokeWidth={5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -275,7 +274,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                     cy={tipPt.y}
                     r={7}
                     fill="#ffffff"
-                    stroke="#ec4899"
+                    stroke="#4f46e5"
                     strokeWidth={3.5}
                     filter="url(#glow)"
                     className="pulse-glow"
@@ -340,7 +339,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
               </div>
 
               {revealed && partName ? (
-                <div className="bg-gradient-to-r from-indigo-50 to-violet-50 text-indigo-700 text-[10px] md:text-xs font-bold px-2 py-1.5 rounded-xl border border-indigo-100 w-full animate-in fade-in zoom-in duration-300 flex items-center justify-center space-x-1">
+                <div className="bg-indigo-50 text-indigo-700 text-[10px] md:text-xs font-bold px-2 py-1.5 rounded-xl border border-indigo-100 w-full animate-in fade-in zoom-in duration-300 flex items-center justify-center space-x-1">
                   <Check size={12} className="text-indigo-600 shrink-0" />
                   <span className="truncate">{partName}</span>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, ArrowRight, RotateCw, Edit, Trophy } from 'lucide-react';
+import { ArrowRight, RotateCw, Edit, Trophy } from 'lucide-react';
 
 interface ResultSummaryProps {
   participants: string[];
@@ -28,15 +28,12 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({
     <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-500">
       {/* Celebration Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex p-3 bg-amber-50 text-amber-600 rounded-3xl animate-bounce">
+        <div className="inline-flex p-3 bg-indigo-50 text-indigo-600 rounded-3xl animate-bounce">
           <Trophy size={28} />
         </div>
-        <h2 className="font-outfit text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center justify-center space-x-1.5">
-          <Sparkles size={20} className="text-amber-500" />
+        <h2 className="font-outfit text-2xl md:text-3xl font-extrabold text-slate-800 flex items-center justify-center">
           <span>結果が決定しました！</span>
-          <Sparkles size={20} className="text-amber-500" />
         </h2>
-        <p className="text-slate-400 text-xs md:text-sm">全員の経路がたどり終わりました。結果は以下の通りです。</p>
       </div>
 
       {/* Summary Mapping Cards */}
@@ -65,10 +62,10 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({
               </div>
 
               <div className="flex items-center space-x-3.5 text-right">
-                <span className="font-extrabold text-emerald-600 text-sm md:text-base">
+                <span className="font-extrabold text-indigo-600 text-sm md:text-base">
                   {mapping.resName}
                 </span>
-                <span className="w-6 h-6 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold font-outfit">
+                <span className="w-6 h-6 flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold font-outfit">
                   {mapping.resIdx + 1}
                 </span>
               </div>
@@ -89,7 +86,7 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({
 
         <button
           onClick={onRecreate}
-          className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-100 hover:shadow-indigo-200 hover:-translate-y-0.5 cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-100 hover:shadow-indigo-200 hover:-translate-y-0.5 cursor-pointer"
         >
           <RotateCw size={16} />
           <span>もう一度あみだを作る</span>

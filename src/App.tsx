@@ -166,11 +166,6 @@ const App: React.FC = () => {
 
             {/* Visual Board Review */}
             <div className="pt-4 border-t border-slate-200/50 max-w-4xl mx-auto w-full">
-              <div className="text-center mb-4">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                  あみだくじ経路のふりかえり
-                </span>
-              </div>
               <AmidaBoard
                 boardData={boardData}
                 participants={participants}
@@ -183,11 +178,6 @@ const App: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Modern Footer */}
-      <footer className="text-center text-slate-400 text-xs mt-16 select-none font-outfit">
-        &copy; {new Date().getFullYear()} Amida Studio. Crafted for absolute fairness.
-      </footer>
     </div>
   );
 };
