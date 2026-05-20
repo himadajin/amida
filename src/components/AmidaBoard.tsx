@@ -30,10 +30,10 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   const colWidth = svgWidth / cols;
   const startX = colWidth / 2;
 
-  const startY = 60;
+  const startY = 8;
   const levelHeight = 35;
   const endY = startY + (levels + 1) * levelHeight;
-  const svgHeight = endY + 70;
+  const svgHeight = endY + 8;
 
   // Helper to convert board coordinates to SVG coordinates
   const getSvgCoords = (pt: Point): { x: number; y: number } => {
@@ -109,7 +109,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
   return (
     <div className="w-full max-w-2xl mx-auto px-4 flex flex-col items-center">
       {/* Top: Participant Selection Cards */}
-      <div className="w-full grid grid-cols-5 gap-0 mb-6">
+      <div className="w-full grid grid-cols-5 gap-0 mb-1">
         {participants.map((name, index) => {
           const isTraced = tracedPaths.has(index);
           const isActive = activeTracing?.col === index;
@@ -118,25 +118,10 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           return (
             <div
               key={`card-part-${index}`}
-              className={`text-center flex flex-col items-center justify-between py-2 px-1.5 sm:px-3 transition-all duration-300 rounded-2xl ${
+              className={`text-center flex flex-col items-center pt-2 pb-0.5 px-1.5 sm:px-3 transition-all duration-300 rounded-2xl w-full ${
                 isActive ? 'bg-indigo-50/45' : ''
               }`}
             >
-              <div className="flex flex-col items-center space-y-1 mb-2.5 w-full">
-                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold font-outfit">
-                  {String.fromCharCode(65 + index)}
-                </span>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => onChangeParticipant(index, e.target.value)}
-                  disabled={isAnyTracing}
-                  maxLength={12}
-                  className="text-center font-bold text-slate-700 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
-                  placeholder={String.fromCharCode(65 + index)}
-                />
-              </div>
-
               <button
                 onClick={() => onStartTrace(index)}
                 disabled={isAnyTracing}
@@ -167,13 +152,23 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                   </>
                 )}
               </button>
+
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => onChangeParticipant(index, e.target.value)}
+                disabled={isAnyTracing}
+                maxLength={12}
+                className="text-center font-bold text-slate-700 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full mt-2 px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                placeholder={String.fromCharCode(65 + index)}
+              />
             </div>
           );
         })}
       </div>
 
       {/* Middle: SVG Amida Board */}
-      <div className="w-full py-4 mb-6 flex justify-center">
+      <div className="w-full py-0 mb-2 flex justify-center">
         <svg
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           className="w-full h-auto select-none"
@@ -321,7 +316,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       </div>
 
       {/* Bottom: Result Slots */}
-      <div className="w-full grid grid-cols-5 gap-0 mt-2">
+      <div className="w-full grid grid-cols-5 gap-0 mt-1">
         {results.map((val, index) => {
           const revealed = isResultRevealed(index);
           const partName = getParticipantForResult(index);
@@ -329,24 +324,19 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           return (
             <div
               key={`card-res-${index}`}
-              className={`text-center flex flex-col justify-between items-center py-2 px-1.5 sm:px-3 h-28 w-full rounded-2xl transition-all duration-500 ${
+              className={`text-center flex flex-col justify-between items-center pt-0.5 pb-2 px-1.5 sm:px-3 h-20 w-full rounded-2xl transition-all duration-500 ${
                 revealed ? 'bg-indigo-50/45' : ''
               }`}
             >
-              <div className="flex flex-col items-center space-y-0.5 w-full">
-                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold font-outfit">
-                  {index + 1}
-                </span>
-                <input
-                  type="text"
-                  value={val}
-                  onChange={(e) => onChangeResult(index, e.target.value)}
-                  disabled={activeTracing !== null}
-                  maxLength={12}
-                  className="text-center font-extrabold text-slate-800 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
-                  placeholder={`${index + 1}`}
-                />
-              </div>
+              <input
+                type="text"
+                value={val}
+                onChange={(e) => onChangeResult(index, e.target.value)}
+                disabled={activeTracing !== null}
+                maxLength={12}
+                className="text-center font-extrabold text-slate-800 text-xs md:text-sm bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
+                placeholder={`${index + 1}`}
+              />
 
               {revealed && partName ? (
                 <div className="bg-indigo-50 text-indigo-700 text-[10px] md:text-xs font-bold px-2 py-1.5 rounded-xl border border-indigo-100 w-full animate-in fade-in zoom-in duration-300 flex items-center justify-center space-x-1">
