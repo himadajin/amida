@@ -7,12 +7,12 @@ const App: React.FC = () => {
   // Participant and Result States (initialized to defaults A-E and 1-5)
   const [participants, setParticipants] = useState<string[]>(['A', 'B', 'C', 'D', 'E']);
   const [results, setResults] = useState<string[]>(['1', '2', '3', '4', '5']);
-  
+
   // Automatically generate Amida board on initial load
-  const [boardData, setBoardData] = useState<AmidaBoardData>(() => 
-    generateAmida({ cols: 5, levels: 12 })
+  const [boardData, setBoardData] = useState<AmidaBoardData>(() =>
+    generateAmida({ cols: 5, levels: 12 }),
   );
-  
+
   const [tracedPaths, setTracedPaths] = useState<Map<number, number>>(new Map());
   const [startedPaths, setStartedPaths] = useState<Record<number, boolean>>({});
   const [activeTracings, setActiveTracings] = useState<Record<number, number>>({});
@@ -130,7 +130,7 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col justify-between items-center pt-[3vh] pb-[2vh] px-4 bg-gradient-to-br from-slate-50 via-slate-100/50 to-slate-200/30">
-      <div 
+      <div
         className="w-full flex-grow flex flex-col justify-center items-center pt-[2vh] animate-in fade-in duration-500"
         style={{ maxWidth: boardMaxWidthCSS }}
       >
@@ -150,7 +150,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Action Options Row - Fixed at screen bottom */}
-      <div 
+      <div
         className="w-full flex items-center justify-center space-x-4 pt-[2vh] pb-[1vh] border-t border-slate-100/60 shrink-0"
         style={{ maxWidth: boardMaxWidthCSS }}
       >

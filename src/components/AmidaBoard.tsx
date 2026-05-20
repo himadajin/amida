@@ -139,10 +139,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
 
       {/* Middle: SVG Amida Board */}
       <div className="w-full py-0 mb-[1.5vh] flex justify-center">
-        <svg
-          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          className="w-full h-auto select-none"
-        >
+        <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full h-auto select-none">
           {/* Filters for premium glow effects */}
           <defs>
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
@@ -152,12 +149,12 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            
+
             <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#4f46e5" />
               <stop offset="100%" stopColor="#818cf8" />
             </linearGradient>
-            
+
             <linearGradient id="gridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.4" />
               <stop offset="10%" stopColor="#e2e8f0" />
@@ -260,25 +257,25 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             const isTraced = !!startedPaths[colIdx];
 
             // Define styles based on button state to match requested designs perfectly
-            let circleFill = "#4f46e5"; // Indigo-600 (Play Button)
-            let circleStroke = "#e0e7ff"; // Indigo-100
-            let circleClass = "hover:fill-[#6366f1] transition-colors duration-150"; // Hover: Indigo-500
-            let iconType = "play";
-            let iconColor = "#ffffff";
+            let circleFill = '#4f46e5'; // Indigo-600 (Play Button)
+            let circleStroke = '#e0e7ff'; // Indigo-100
+            let circleClass = 'hover:fill-[#6366f1] transition-colors duration-150'; // Hover: Indigo-500
+            let iconType = 'play';
+            let iconColor = '#ffffff';
 
             if (isTraced) {
               // Traced/Completed: Light Indigo bg, subtle indigo stroke, Indigo checkmark (already pressed look)
-              circleFill = "#f0f2fe"; // Indigo-50
-              circleStroke = "#e0e7ff"; // Indigo-100
-              circleClass = "";
-              iconType = "check";
-              iconColor = "#4f46e5"; // Indigo-600
+              circleFill = '#f0f2fe'; // Indigo-50
+              circleStroke = '#e0e7ff'; // Indigo-100
+              circleClass = '';
+              iconType = 'check';
+              iconColor = '#4f46e5'; // Indigo-600
             }
 
             const isUnclickable = isTraced;
             const buttonClass = isUnclickable
-              ? "pointer-events-none outline-none"
-              : "transition-colors duration-150 cursor-pointer outline-none";
+              ? 'pointer-events-none outline-none'
+              : 'transition-colors duration-150 cursor-pointer outline-none';
 
             return (
               <g
@@ -288,7 +285,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 tabIndex={isUnclickable ? -1 : 0}
                 role="button"
                 aria-disabled={isUnclickable}
-                aria-label={isTraced ? "たどり完了" : "たどる"}
+                aria-label={isTraced ? 'たどり完了' : 'たどる'}
               >
                 {/* Circular Button Background (Appropriate Radius 12) */}
                 <circle
@@ -302,7 +299,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 />
 
                 {/* Centered Icons (Width 12, Height 12) */}
-                {iconType === "play" && (
+                {iconType === 'play' && (
                   <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill={iconColor} stroke="none">
                       <polygon points="5 3 19 12 5 21 5 3" />
@@ -310,9 +307,18 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                   </g>
                 )}
 
-                {iconType === "check" && (
+                {iconType === 'check' && (
                   <g transform={`translate(${pt.x - 6}, ${pt.y - 6})`}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={iconColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={iconColor}
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </g>
@@ -324,15 +330,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           {/* Column indicators at the bottom */}
           {Array.from({ length: cols }).map((_, colIdx) => {
             const pt = getSvgCoords({ x: colIdx, y: levels + 1 });
-            return (
-              <circle
-                key={`bot-dot-${colIdx}`}
-                cx={pt.x}
-                cy={pt.y}
-                r={5}
-                fill="#cbd5e1"
-              />
-            );
+            return <circle key={`bot-dot-${colIdx}`} cx={pt.x} cy={pt.y} r={5} fill="#cbd5e1" />;
           })}
         </svg>
       </div>

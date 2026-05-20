@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { generateAmida, tracePath, calculateAllResults, type AmidaBoardData, getPointAtProgress } from './amida';
+import {
+  generateAmida,
+  tracePath,
+  calculateAllResults,
+  type AmidaBoardData,
+  getPointAtProgress,
+} from './amida';
 
 // Simple seedable random generator for deterministic testing
 function createSeededRandom(seed: number) {
@@ -21,11 +27,11 @@ describe('Amida Core Logic', () => {
 
     it('should not contain adjacent horizontal lines on the same level (no shared endpoints)', () => {
       const board = generateAmida({ cols: 5, levels: 15 });
-      
+
       // Check each level
       for (let y = 1; y <= board.levels; y++) {
         const linesAtLevel = board.horizontalLines.filter((l) => l.y === y);
-        
+
         // Check for adjacent horizontal lines
         for (let i = 0; i < linesAtLevel.length; i++) {
           for (let j = i + 1; j < linesAtLevel.length; j++) {
@@ -105,7 +111,7 @@ describe('Amida Core Logic', () => {
         const results = calculateAllResults(board);
 
         expect(results.size).toBe(5);
-        
+
         // Ensure every result index (0 to 4) is mapped to exactly once
         const targetIndices = Array.from(results.values());
         expect(targetIndices.sort()).toEqual([0, 1, 2, 3, 4]);
@@ -121,9 +127,9 @@ describe('Amida Core Logic', () => {
       // Total length = 2 + 2 = 4
       expect(getPointAtProgress(path, 0)).toEqual({ x: 0, y: 0 });
       expect(getPointAtProgress(path, 0.25)).toEqual({ x: 0, y: 1 }); // 25% of 4 is 1 (halfway in first segment)
-      expect(getPointAtProgress(path, 0.5)).toEqual({ x: 0, y: 2 });  // 50% is at first turn (end of first segment)
+      expect(getPointAtProgress(path, 0.5)).toEqual({ x: 0, y: 2 }); // 50% is at first turn (end of first segment)
       expect(getPointAtProgress(path, 0.75)).toEqual({ x: 1, y: 2 }); // 75% is halfway in second segment
-      expect(getPointAtProgress(path, 1.0)).toEqual({ x: 2, y: 2 });  // 100% is at the end
+      expect(getPointAtProgress(path, 1.0)).toEqual({ x: 2, y: 2 }); // 100% is at the end
     });
   });
 });

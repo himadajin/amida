@@ -104,19 +104,15 @@ export function tracePath(board: AmidaBoardData, startingCol: number): Point[] {
 
   const path: Point[] = [];
   let currentX = startingCol;
-  
+
   // Start at the very top (y = 0)
   path.push({ x: currentX, y: 0 });
 
   // Traverse level by level
   for (let currentY = 1; currentY <= levels; currentY++) {
     // Check if there is a horizontal line connected to currentX at level currentY
-    const leftLine = horizontalLines.find(
-      (l) => l.y === currentY && l.x === currentX
-    );
-    const rightLine = horizontalLines.find(
-      (l) => l.y === currentY && l.x === currentX - 1
-    );
+    const leftLine = horizontalLines.find((l) => l.y === currentY && l.x === currentX);
+    const rightLine = horizontalLines.find((l) => l.y === currentY && l.x === currentX - 1);
 
     if (leftLine) {
       // Line to the right (connecting currentX and currentX + 1)
@@ -203,4 +199,3 @@ export function getPointAtProgress(path: Point[], progress: number): Point {
 
   return path[path.length - 1];
 }
-

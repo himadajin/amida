@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
   background-color: #f8fafc;
   color: #0f172a;
 }
@@ -40,7 +44,8 @@ body {
 
 /* Animations */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
@@ -102,7 +107,9 @@ body {
   stroke: #cbd5e1;
   stroke-width: 3;
   stroke-linecap: round;
-  transition: stroke 0.2s, stroke-width 0.2s;
+  transition:
+    stroke 0.2s,
+    stroke-width 0.2s;
 }
 
 .amida-horizontal-line:hover {
