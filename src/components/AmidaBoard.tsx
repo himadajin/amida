@@ -393,6 +393,27 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                       className="amida-completion-spark amida-completion-spark-right"
                     />
                     <circle
+                      cx={pt.x - 3}
+                      cy={pt.y + 4}
+                      r={1.2}
+                      fill="currentColor"
+                      className="amida-completion-spark amida-completion-spark-low-left"
+                    />
+                    <circle
+                      cx={pt.x + 4}
+                      cy={pt.y + 3}
+                      r={1.1}
+                      fill="currentColor"
+                      className="amida-completion-spark amida-completion-spark-low-right"
+                    />
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y - 6}
+                      r={1.15}
+                      fill="currentColor"
+                      className="amida-completion-spark amida-completion-spark-top"
+                    />
+                    <circle
                       cx={pt.x}
                       cy={pt.y}
                       r={4.2}
