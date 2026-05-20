@@ -357,11 +357,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           return (
             <div
               key={`card-res-${index}`}
-              className={`text-center flex flex-col justify-between items-center pt-0.5 pb-2 px-1.5 sm:px-3 h-20 w-full rounded-2xl transition-all duration-300 border ${
-                revealed
-                  ? 'bg-[var(--slate-1)] border-[var(--slate-12)] shadow-sm'
-                  : 'bg-transparent border-transparent'
-              }`}
+              className="text-center flex flex-col justify-between items-center pt-0.5 pb-2 px-1.5 sm:px-3 h-16 w-full bg-transparent border border-transparent"
             >
               <input
                 type="text"
@@ -374,12 +370,12 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
               />
 
               {revealed && partName ? (
-                <div className="bg-[var(--slate-3)] text-[var(--slate-12)] text-[10px] md:text-xs font-bold px-2 py-1.5 rounded-xl border border-[var(--slate-6)] w-full animate-in fade-in zoom-in duration-300 flex items-center justify-center space-x-1">
+                <div className="text-[var(--slate-12)] text-[10px] md:text-xs font-bold w-full animate-in fade-in duration-300 flex items-center justify-center space-x-1 py-1">
                   <Check size={12} className="text-[var(--slate-12)] shrink-0" />
                   <span className="truncate">{partName}</span>
                 </div>
               ) : (
-                <div className="text-[10px] font-semibold text-[var(--slate-8)] py-1 bg-[var(--slate-3)] border border-[var(--slate-6)] rounded-xl w-full select-none flex items-center justify-center">
+                <div className="text-[10px] font-bold text-[var(--slate-8)] py-1 w-full select-none flex items-center justify-center">
                   <span className="text-xs font-bold font-outfit">?</span>
                 </div>
               )}
