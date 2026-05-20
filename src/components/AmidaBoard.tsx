@@ -182,7 +182,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
       <div className="w-full grid grid-cols-5 gap-0 mb-[1vh]">
         {participants.map((name, index) => {
           const userColor = USER_COLORS[index % USER_COLORS.length];
-          const labelColor = startedPaths[index] ? 'var(--slate-9)' : userColor;
+          const isStarted = !!startedPaths[index];
 
           return (
             <div
@@ -196,15 +196,22 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
                 onChange={(e) => onChangeParticipant(index, e.target.value)}
                 disabled={hasAnyStarted}
                 maxLength={12}
-                className="text-center font-bold text-xs md:text-sm bg-transparent border-b border-transparent hover:border-[var(--slate-6)] focus:border-[var(--slate-12)] outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed"
-                style={{ color: labelColor }}
+                className={`text-center font-bold text-xs md:text-sm bg-transparent border-b border-transparent hover:border-[var(--slate-6)] focus:border-[var(--slate-12)] outline-none w-full px-1 transition-colors disabled:opacity-85 disabled:cursor-not-allowed ${
+                  isStarted ? 'amida-participant-drain' : ''
+                }`}
+                style={
+                  {
+                    '--amida-user-color': userColor,
+                    color: userColor,
+                  } as React.CSSProperties
+                }
                 placeholder={String.fromCharCode(65 + index)}
               />
-              {startedPaths[index] && (
+              {isStarted && (
                 <span
                   data-testid={`label-transfer-${index}`}
                   className="amida-label-transfer"
-                  style={{ backgroundColor: userColor }}
+                  style={{ color: userColor }}
                 />
               )}
             </div>

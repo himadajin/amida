@@ -54,7 +54,7 @@ describe('AmidaBoard', () => {
   it('dims a started participant label and leaves a light button color trail', () => {
     renderBoard(new Map(), { 0: true });
 
-    expect(screen.getByTestId('participant-input-0')).toHaveStyle({ color: 'var(--slate-9)' });
+    expect(screen.getByTestId('participant-input-0')).toHaveClass('amida-participant-drain');
     expect(screen.getByTestId('top-button-ring-0')).toHaveAttribute('stroke', '#fdbdaf');
     expect(screen.getByTestId('start-effect-0')).toBeInTheDocument();
     expect(screen.getByTestId('label-transfer-0')).toBeInTheDocument();

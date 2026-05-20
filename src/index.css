@@ -166,19 +166,30 @@ body {
 @keyframes amida-label-transfer {
   0% {
     opacity: 0;
-    transform: translate(-50%, 0) scale(0.7, 0.7);
+    transform: translate(-50%, 0) scale(0.35, 0.2);
   }
   16% {
-    opacity: 0.95;
-    transform: translate(-50%, 5px) scale(0.82, 1.12);
+    opacity: 0.85;
+    transform: translate(-50%, 4px) scale(0.55, 0.75);
   }
   76% {
-    opacity: 0.95;
-    transform: translate(-50%, 32px) scale(0.72, 1.24);
+    opacity: 0.9;
+    transform: translate(-50%, 31px) scale(0.42, 1.14);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, 42px) scale(0.62, 0.62);
+    transform: translate(-50%, 40px) scale(0.34, 0.22);
+  }
+}
+
+@keyframes amida-participant-drain {
+  0%,
+  18% {
+    color: var(--amida-user-color);
+  }
+  82%,
+  100% {
+    color: var(--slate-9);
   }
 }
 
@@ -253,14 +264,25 @@ body {
 .amida-label-transfer {
   position: absolute;
   left: 50%;
-  bottom: -1px;
+  top: 17px;
   z-index: 3;
-  width: 7px;
-  height: 7px;
-  border-radius: 9999px;
+  width: 5px;
+  height: 18px;
+  border-radius: 9999px 9999px 70% 70%;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, currentColor 18%, transparent),
+    currentColor 44%,
+    color-mix(in srgb, currentColor 72%, transparent)
+  );
+  box-shadow: 0 0 7px color-mix(in srgb, currentColor 38%, transparent);
   pointer-events: none;
   transform-origin: center;
   animation: amida-label-transfer 460ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
+.amida-participant-drain {
+  animation: amida-participant-drain 460ms ease-out forwards;
 }
 
 .amida-bottom-dot-complete,
@@ -334,8 +356,13 @@ body {
   .amida-start-button-puff,
   .amida-start-drop,
   .amida-label-transfer,
+  .amida-participant-drain,
   .amida-result-label {
     animation: none;
+  }
+
+  .amida-participant-drain {
+    color: var(--slate-9) !important;
   }
 
   .amida-completion-effect,
