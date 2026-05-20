@@ -1,0 +1,448 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@import 'tailwindcss';
+
+:root {
+  --slate-1: #fcfcfd;
+  --slate-2: #f9f9fb;
+  --slate-3: #f1f3f5;
+  --slate-4: #e6e8eb;
+  --slate-5: #dfe3e6;
+  --slate-6: #e1e3e6;
+  --slate-7: #d7dbdf;
+  --slate-8: #c1c8cd;
+  --slate-9: #889096;
+  --slate-11: #2f3437;
+  --slate-12: #11181c;
+
+  font-family:
+    'Plus Jakarta Sans',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: var(--slate-2);
+  color: var(--slate-12);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--slate-2);
+  color: var(--slate-12);
+}
+
+/* Custom typography and utility classes */
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Micro-animations for high-fidelity interactive elements */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 1.8s infinite ease-in-out;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes path-pulse {
+  0%,
+  100% {
+    stroke-width: 4;
+  }
+  50% {
+    stroke-width: 4.8;
+  }
+}
+
+.path-active {
+  animation: path-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes amida-dot-pop {
+  0% {
+    transform: scale(1);
+  }
+  24% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes amida-completion-ring {
+  0% {
+    opacity: 0.22;
+    transform: scale(0.86);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.58);
+  }
+}
+
+@keyframes amida-completion-spark-left {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-11px, -7px) scale(0.2);
+  }
+}
+
+@keyframes amida-completion-spark-right {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(11px, -8px) scale(0.2);
+  }
+}
+
+@keyframes amida-completion-spark-low-left {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-9px, 9px) scale(0.18);
+  }
+}
+
+@keyframes amida-completion-spark-low-right {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(9px, 8px) scale(0.18);
+  }
+}
+
+@keyframes amida-completion-spark-top {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -11px) scale(0.16);
+  }
+}
+
+@keyframes amida-color-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.72, 0.72);
+  }
+  18% {
+    opacity: 0.95;
+    transform: translateY(1px) scale(0.85, 1.18);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.48, 1.42);
+  }
+}
+
+@keyframes amida-label-transfer {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.34, 0.18);
+  }
+  16% {
+    opacity: 0.85;
+    transform: translate(-50%, 5px) scale(0.52, 0.72);
+  }
+  84% {
+    opacity: 0.9;
+    transform: translate(-50%, 18px) scale(0.4, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.3, 0.18);
+  }
+}
+
+@keyframes amida-label-peel {
+  0% {
+    opacity: 0;
+    clip-path: inset(46% 38% 0 38%);
+    transform: translate(-50%, 0) scale(0.5, 0.92);
+  }
+  20% {
+    opacity: 0.84;
+    clip-path: inset(50% 34% 0 34%);
+    transform: translate(-50%, 1px) scale(0.42, 0.82);
+  }
+  64% {
+    opacity: 0.7;
+    clip-path: inset(64% 42% 0 42%);
+    transform: translate(-50%, 5px) scale(0.28, 0.58);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(76% 47% 0 47%);
+    transform: translate(-50%, 9px) scale(0.16, 0.34);
+  }
+}
+
+@keyframes amida-participant-squeeze {
+  0%,
+  24% {
+    transform: scaleX(1);
+  }
+  48% {
+    transform: scaleX(0.94);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes amida-participant-drain {
+  0%,
+  18% {
+    color: var(--amida-user-color);
+  }
+  82%,
+  100% {
+    color: var(--slate-9);
+  }
+}
+
+@keyframes amida-start-button-puff {
+  0% {
+    transform: scale(1);
+  }
+  48% {
+    transform: scale(1);
+  }
+  68% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes amida-start-ring {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  64% {
+    opacity: 0.16;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.28);
+  }
+}
+
+@keyframes amida-result-label-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.amida-completion-effect {
+  pointer-events: none;
+}
+
+.amida-start-effect {
+  pointer-events: none;
+}
+
+.amida-label-transfer {
+  position: absolute;
+  left: calc(50% - 1.5px);
+  top: 24px;
+  z-index: 3;
+  width: 2.5px;
+  height: 12px;
+  border-radius: 9999px 9999px 70% 70%;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, currentColor 18%, transparent),
+    currentColor 44%,
+    color-mix(in srgb, currentColor 72%, transparent)
+  );
+  box-shadow: 0 0 7px color-mix(in srgb, currentColor 38%, transparent);
+  pointer-events: none;
+  transform-origin: center;
+  animation: amida-label-transfer 330ms cubic-bezier(0.16, 0.82, 0.22, 1) 75ms forwards;
+}
+
+.amida-label-peel {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  z-index: 2;
+  width: calc(100% - 12px);
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: clip;
+  line-height: 1.25rem;
+  pointer-events: none;
+  transform-origin: bottom center;
+  animation: amida-label-peel 180ms cubic-bezier(0.18, 0.88, 0.22, 1.12) forwards;
+}
+
+.amida-participant-drain {
+  animation:
+    amida-participant-drain 360ms ease-out forwards,
+    amida-participant-squeeze 180ms ease-out;
+  transform-origin: center;
+}
+
+.amida-bottom-dot-complete,
+.amida-completion-ring,
+.amida-completion-spark,
+.amida-color-drop,
+.amida-start-button-puff,
+.amida-start-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.amida-bottom-dot-complete {
+  animation: amida-dot-pop 180ms cubic-bezier(0.18, 0.9, 0.22, 1.25);
+}
+
+.amida-completion-ring {
+  animation: amida-completion-ring 220ms ease-out forwards;
+}
+
+.amida-completion-spark-left {
+  animation: amida-completion-spark-left 360ms ease-out forwards;
+}
+
+.amida-completion-spark-right {
+  animation: amida-completion-spark-right 360ms ease-out forwards;
+}
+
+.amida-completion-spark-low-left {
+  animation: amida-completion-spark-low-left 330ms ease-out forwards;
+}
+
+.amida-completion-spark-low-right {
+  animation: amida-completion-spark-low-right 330ms ease-out forwards;
+}
+
+.amida-completion-spark-top {
+  animation: amida-completion-spark-top 330ms ease-out forwards;
+}
+
+.amida-color-drop {
+  animation: amida-color-drop 520ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
+.amida-start-ring {
+  animation: amida-start-ring 620ms ease-out forwards;
+}
+
+.amida-start-button-puff {
+  animation: amida-start-button-puff 620ms cubic-bezier(0.2, 0.85, 0.25, 1.12);
+}
+
+.amida-result-label {
+  opacity: 0;
+  animation: amida-result-label-reveal 220ms ease-out 260ms forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-glow,
+  .path-active,
+  .amida-bottom-dot-complete,
+  .amida-completion-ring,
+  .amida-completion-spark,
+  .amida-color-drop,
+  .amida-start-ring,
+  .amida-start-button-puff,
+  .amida-label-transfer,
+  .amida-label-peel,
+  .amida-participant-drain,
+  .amida-result-label {
+    animation: none;
+  }
+
+  .amida-participant-drain {
+    color: var(--slate-9) !important;
+  }
+
+  .amida-completion-effect,
+  .amida-start-effect {
+    display: none;
+  }
+
+  .amida-result-label {
+    opacity: 1;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--slate-8);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--slate-9);
+}
+
+/* SVG Amidakuji Grid Styles */
+.amida-grid-line {
+  stroke: var(--slate-11);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.amida-horizontal-line {
+  stroke: var(--slate-11);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition:
+    stroke 0.15s,
+    stroke-width 0.15s;
+}
+
+.amida-horizontal-line:hover {
+  stroke: var(--slate-12);
+  stroke-width: 3.5;
+}
