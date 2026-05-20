@@ -379,13 +379,13 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             >
               {revealed && partName ? (
                 <div
-                  className="text-[10px] md:text-xs font-bold w-full animate-in fade-in duration-300 flex items-center justify-center py-1"
+                  className="text-[10px] md:text-xs font-bold w-full animate-in fade-in duration-300 flex items-center justify-center py-1 -mt-1"
                   style={{ color: participantColor }}
                 >
                   <span className="truncate">{partName}</span>
                 </div>
               ) : (
-                <div className="text-[10px] font-bold text-[var(--slate-8)] py-1 w-full select-none flex items-center justify-center">
+                <div className="text-[10px] font-bold text-[var(--slate-8)] py-1 -mt-1 w-full select-none flex items-center justify-center">
                   <span className="text-xs font-bold font-outfit">?</span>
                 </div>
               )}
