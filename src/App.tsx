@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AmidaBoard } from './components/AmidaBoard';
 import { generateAmida, tracePath, type AmidaBoardData } from './logic/amida';
+import { traceProgressEasing } from './logic/easing';
 
 const App: React.FC = () => {
   // Participant and Result States (initialized to defaults A-E and 1-5)
@@ -86,16 +87,17 @@ const App: React.FC = () => {
         return;
       }
 
-      if (!start) start = timestamp;
+      if (start === null) start = timestamp;
       const elapsed = timestamp - start;
-      const progress = Math.min(elapsed / duration, 1);
+      const timeProgress = Math.min(elapsed / duration, 1);
+      const progress = traceProgressEasing(timeProgress);
 
       setActiveTracings((prev) => ({
         ...prev,
         [colIndex]: progress,
       }));
 
-      if (progress < 1) {
+      if (timeProgress < 1) {
         requestAnimationFrame(animate);
       } else {
         // Animation finished
