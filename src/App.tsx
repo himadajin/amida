@@ -172,10 +172,10 @@ const App: React.FC = () => {
         <button
           onClick={handleResetTracing}
           disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
-          className={`inline-flex h-9 w-full items-center justify-center whitespace-nowrap px-3 rounded-lg border border-[var(--slate-6)] bg-[var(--slate-1)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow,opacity] duration-200 ${
+          className={`inline-flex h-9 w-full items-center justify-center whitespace-nowrap px-3 rounded-lg border border-[var(--slate-6)] bg-[var(--slate-1)] text-[var(--slate-11)] font-bold text-xs transition-[background-color,border-color,transform,opacity] duration-200 ${
             tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
-              ? 'opacity-40 cursor-not-allowed shadow-none'
-              : 'cursor-pointer hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] hover:-translate-y-0.5'
+              ? 'opacity-40 cursor-not-allowed'
+              : 'cursor-pointer hover:border-[var(--slate-7)] hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] hover:-translate-y-px'
           }`}
         >
           <span>Reset</span>
@@ -183,7 +183,7 @@ const App: React.FC = () => {
 
         <button
           onClick={handleRecreateBoard}
-          className="inline-flex h-9 w-full items-center justify-center whitespace-nowrap px-3 rounded-lg border border-[var(--slate-6)] bg-[var(--slate-1)] hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] text-[var(--slate-11)] font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow] duration-200 cursor-pointer hover:-translate-y-0.5"
+          className="inline-flex h-9 w-full items-center justify-center whitespace-nowrap px-3 rounded-lg border border-[var(--slate-6)] bg-[var(--slate-1)] hover:border-[var(--slate-7)] hover:bg-[var(--slate-3)] active:bg-[var(--slate-4)] text-[var(--slate-11)] font-bold text-xs transition-[background-color,border-color,transform] duration-200 cursor-pointer hover:-translate-y-px"
         >
           <span>Shuffle</span>
         </button>
