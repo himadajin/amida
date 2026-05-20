@@ -9,7 +9,7 @@ export const easeInCubic: EasingFunction = (progress) => {
 
 export const easeInWithInitialMomentum: EasingFunction = (progress) => {
   const clamped = clampProgress(progress);
-  return clamped * 0.45 + clamped ** 3 * 0.55;
+  return clamped * 0.62 + clamped ** 3 * 0.38;
 };
 
 export const traceProgressEasing: EasingFunction = easeInWithInitialMomentum;
