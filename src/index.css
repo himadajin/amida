@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #f1f5f9 0%, #f8fafc 50%, #eef2f6 100%);
+  background-attachment: fixed;
+}
+
+/* Custom premium styles */
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes path-pulse {
+  0% {
+    stroke-width: 5;
+    filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.6));
+  }
+  50% {
+    stroke-width: 6;
+    filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.9));
+  }
+  100% {
+    stroke-width: 5;
+    filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.6));
+  }
+}
+
+.path-active {
+  animation: path-pulse 1.5s infinite ease-in-out;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Grid drawing styles */
+.amida-grid-line {
+  stroke: #e2e8f0;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.amida-horizontal-line {
+  stroke: #cbd5e1;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke 0.2s, stroke-width 0.2s;
+}
+
+.amida-horizontal-line:hover {
+  stroke: #94a3b8;
+  stroke-width: 4;
+}
