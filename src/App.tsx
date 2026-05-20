@@ -189,7 +189,7 @@ const App: React.FC = () => {
         <button
           onClick={handleResetTracing}
           disabled={tracedPaths.size === 0 && Object.keys(startedPaths).length === 0}
-          className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all ${
+          className={`inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow,opacity] duration-200 ${
             tracedPaths.size === 0 && Object.keys(startedPaths).length === 0
               ? 'opacity-50 cursor-not-allowed shadow-none'
               : 'cursor-pointer hover:-translate-y-0.5'
@@ -201,7 +201,7 @@ const App: React.FC = () => {
 
         <button
           onClick={handleRecreateBoard}
-          className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-all cursor-pointer hover:-translate-y-0.5"
+          className="inline-flex items-center space-x-1.5 px-5 py-3 rounded-2xl border border-slate-200 bg-white/80 hover:bg-slate-50 text-slate-600 font-bold text-xs shadow-sm transition-[background-color,transform,box-shadow] duration-200 cursor-pointer hover:-translate-y-0.5"
         >
           <RefreshCw size={13} />
           <span>あみだを作り直す</span>

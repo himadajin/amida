@@ -262,7 +262,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             // Define styles based on button state to match requested designs perfectly
             let circleFill = "#4f46e5"; // Indigo-600 (Play Button)
             let circleStroke = "#e0e7ff"; // Indigo-100
-            let circleClass = "hover:fill-[#6366f1] transition-all"; // Hover: Indigo-500
+            let circleClass = "hover:fill-[#6366f1] transition-colors duration-150"; // Hover: Indigo-500
             let iconType = "play";
             let iconColor = "#ffffff";
 
@@ -278,7 +278,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
             const isUnclickable = isTraced;
             const buttonClass = isUnclickable
               ? "pointer-events-none outline-none"
-              : "transition-all duration-150 cursor-pointer outline-none";
+              : "transition-colors duration-150 cursor-pointer outline-none";
 
             return (
               <g
@@ -346,7 +346,7 @@ export const AmidaBoard: React.FC<AmidaBoardProps> = ({
           return (
             <div
               key={`card-res-${index}`}
-              className={`text-center flex flex-col justify-between items-center pt-0.5 pb-2 px-1.5 sm:px-3 h-20 w-full rounded-2xl transition-all duration-500 ${
+              className={`text-center flex flex-col justify-between items-center pt-0.5 pb-2 px-1.5 sm:px-3 h-20 w-full rounded-2xl transition-colors duration-500 ${
                 revealed ? 'bg-indigo-50/45' : ''
               }`}
             >
